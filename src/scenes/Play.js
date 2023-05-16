@@ -6,7 +6,7 @@ class Play extends Phaser.Scene {
     preload(){
         this.load.path = 'assets/';
         this.load.image('player',     'ph_player.png');
-        //this.load.image('background', 'background.png');
+        this.load.image('background', 'ph_background.png');
     }
     
     create() {
@@ -26,7 +26,7 @@ class Play extends Phaser.Scene {
         //Initialize score
         this.score = 0;
 
-        this.InitCanvasAndUI();
+        this.initCanvasAndUI();
 
         // event
         //this.input.on('pointerdown',this.startDrag,this);
@@ -37,7 +37,7 @@ class Play extends Phaser.Scene {
         this.background.setDepth(-100);
 
         //Spawn player
-        this.player = this.add.sprite(game.config.width / 2, game.config.height / 2, 'player');
+        this.player = new Player(this, game.config.width/2, game.config.height/2, 'player').setOrigin(0.5, 0.5);
     }
 
     update() {
@@ -47,10 +47,12 @@ class Play extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {
             this.game.sound.stopAll();
             this.scene.start("menuScene");
-        }        
+        } 
+
+        this.player.update();
     }
 
-    InitCanvasAndUI(){
+    initCanvasAndUI(){
         // white borders
         this.gameOver = false;
         let rec = this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0, 0);

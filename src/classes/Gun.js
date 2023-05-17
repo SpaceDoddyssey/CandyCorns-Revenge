@@ -11,7 +11,7 @@ class Gun extends Phaser.GameObjects.Sprite {
 
         //Adjust decelerate to change how fast the player declerates from the recoil
         //  - decelerate should be within the range 0 < decelerate < 1
-        //  - the larger decelerate is, the faster the player will slow down, and vice versa.
+        //  - the smaller decelerate is, the faster the player will slow down, and vice versa.
 
         this.decelerate = 0.98;
         this.distanceFromPlayer = 66; 

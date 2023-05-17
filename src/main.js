@@ -20,6 +20,8 @@ let borderPadding = borderUISize / 10;
 
 let PlayButton, Ready;
 
+let playerBullets = [];
+
 let manualMoveSpeed = 1;
 
 let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC;

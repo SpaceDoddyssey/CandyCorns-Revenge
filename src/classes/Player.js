@@ -3,7 +3,8 @@ class Player extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
 
         scene.add.existing(this);
-        scene.physics.add.existing(this);  
+        scene.physics.add.existing(this);
+        this.scale = 0.5;  
         this.isFiring = false;      
         this.moveSpeed = 15;         // pixels per frame
 

@@ -5,8 +5,10 @@ class Play extends Phaser.Scene {
 
     preload(){
         this.load.path = 'assets/';
-        this.load.image('player',     'ph_player.png');
-        this.load.image('background', 'ph_background.png');
+        this.load.image('player',       'ph_player.png');
+        this.load.image('background',   'ph_background.png');
+        this.load.image('gun',          'ph_gun.png');
+        this.load.image('playerbullet', 'ph_bullet.png');
     }
     
     create() {
@@ -38,6 +40,8 @@ class Play extends Phaser.Scene {
 
         //Spawn player
         this.player = new Player(this, game.config.width/2, game.config.height/2, 'player').setOrigin(0.5, 0.5);
+        this.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
+        this.gun.playerSprite = this.player;
     }
 
     update() {
@@ -50,6 +54,10 @@ class Play extends Phaser.Scene {
         } 
 
         this.player.update();
+        this.gun.update();
+        playerBullets.forEach(bullet => {
+            bullet.update();
+        })
     }
 
     initCanvasAndUI(){

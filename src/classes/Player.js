@@ -7,13 +7,20 @@ class Player extends Phaser.GameObjects.Sprite {
         this.scale = 0.5;  
         this.isFiring = false;      
         this.moveSpeed = 15;         // pixels per frame
+        this.gun;
 
-        //scene.input.on('pointerdown', this.fire.bind(this));
+        scene.input.on('pointerdown', this.fire.bind(this));
 
         this.velocity = new Phaser.Math.Vector2();
     }
 
+    fire(){
+        this.gun.fire();
+    }
+
     update(){
+        this.gun.update(); 
+
         this.velocity.set(0,0);
 
         if(keyUP.isDown){

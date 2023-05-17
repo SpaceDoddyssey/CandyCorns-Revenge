@@ -9,7 +9,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.distanceFromPlayer = 66; 
         this.playerSprite; //Set by Play
 
-        scene.input.on('pointerdown', this.fire.bind(this));
+        //scene.input.on('pointerdown', this.fire.bind(this));
     }
 
     update(){
@@ -25,6 +25,7 @@ class Gun extends Phaser.GameObjects.Sprite {
     aimTowardsCursor(){
         var pointer = this.scene.input.activePointer;
 
+        console.log(this.playerSprite);
         // Calculate angle between player sprite and cursor position
         var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x, pointer.y);
 

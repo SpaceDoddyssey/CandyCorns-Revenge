@@ -40,8 +40,8 @@ class Play extends Phaser.Scene {
 
         //Spawn player
         this.player = new Player(this, game.config.width/2, game.config.height/2, 'player').setOrigin(0.5, 0.5);
-        this.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
-        this.gun.playerSprite = this.player;
+        this.player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
+        this.player.gun.playerSprite = this.player;
     }
 
     update() {
@@ -54,7 +54,6 @@ class Play extends Phaser.Scene {
         } 
 
         this.player.update();
-        this.gun.update();
         playerBullets.forEach(bullet => {
             bullet.update();
         })

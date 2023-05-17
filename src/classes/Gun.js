@@ -5,7 +5,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.scene = scene;
 
         this.scale = 0.1;
-        this.recoil = 50; 
+        this.recoil = 250; 
         this.distanceFromPlayer = 66; 
         this.playerSprite; //Set by Play
 
@@ -20,12 +20,19 @@ class Gun extends Phaser.GameObjects.Sprite {
         let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet').setOrigin(0.5, 0.5);
         bullet.rotation = this.rotation;
         playerBullets.push(bullet);
+
+        var pointer = this.scene.input.activePointer;
+        var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x, pointer.y);
+        var forceX = Math.cos(angle) * this.recoil;
+        var forceY = Math.sin(angle) * this.recoil;
+        this.playerSprite.body.velocity.x -= forceX;
+        this.playerSprite.body.velocity.y -= forceY;
     }
 
     aimTowardsCursor(){
         var pointer = this.scene.input.activePointer;
 
-        console.log(this.playerSprite);
+        //console.log(this.playerSprite);
         // Calculate angle between player sprite and cursor position
         var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x, pointer.y);
 

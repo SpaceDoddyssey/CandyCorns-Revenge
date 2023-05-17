@@ -29,7 +29,9 @@ class Menu extends Phaser.Scene {
         let tutorialText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize, 'WASD to move, click to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';
         const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 6, 'PLAY', menuConfig).setOrigin(0.5).setInteractive();
-        Ready = false;
+        //-------------------------------------------
+        Ready = true; //CHANGE TO REENABLE THE MENU
+        //-------------------------------------------
         PlayButton.on('pointerdown', function (pointer)
         {
           this.setTint(0xff0000);

@@ -18,20 +18,20 @@ class Player extends Phaser.GameObjects.Sprite {
         this.gun.fire();
     }
 
-    update(){
+    update() {
         this.gun.update(); 
 
         this.velocity.set(0,0);
 
-        if(keyUP.isDown){
+        if(keyUP.isDown) {
             this.velocity.y = -1;
-        } else if (keyDOWN.isDown){
+        } else if (keyDOWN.isDown) {
             this.velocity.y = 1;
         }
 
         if(keyLEFT.isDown){
             this.velocity.x = -1;
-        } else if(keyRIGHT.isDown){
+        } else if(keyRIGHT.isDown) {
             this.velocity.x = 1;
         }
 

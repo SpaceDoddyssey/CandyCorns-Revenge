@@ -5,28 +5,43 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.scene = scene;
 
         this.scale = 0.1;
-        this.recoil = 250; 
+        this.recoil = -5000; 
+        this.forceX = 0;
+        this.forceY = 0;
+
+        //Adjust decelerate to change how fast the player declerates from the recoil
+        //  - decelerate should be within the range 0 < decelerate < 1
+        //  - the larger decelerate is, the faster the player will slow down, and vice versa.
+
+        this.decelerate = 0.98;
         this.distanceFromPlayer = 66; 
         this.playerSprite; //Set by Play
 
         //scene.input.on('pointerdown', this.fire.bind(this));
     }
 
-    update(){
+    update() {
         this.aimTowardsCursor();
+        
+        if (this.forceX != 0 && 1 < Math.abs(this.forceX)) this.forceX *= this.decelerate;
+        else this.forceX = 0;
+        if (this.forceY != 0 && 1 < Math.abs(this.forceY)) this.forceY *= this.decelerate;
+        else this.forceY = 0;
+
+        this.playerSprite.body.setAcceleration(this.forceX, this.forceY);
     }
 
-    fire(){
+    fire() {
         let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet').setOrigin(0.5, 0.5);
         bullet.rotation = this.rotation;
         playerBullets.push(bullet);
 
         var pointer = this.scene.input.activePointer;
         var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x, pointer.y);
-        var forceX = Math.cos(angle) * this.recoil;
-        var forceY = Math.sin(angle) * this.recoil;
-        this.playerSprite.body.velocity.x -= forceX;
-        this.playerSprite.body.velocity.y -= forceY;
+        this.forceX = Math.cos(angle) * this.recoil;
+        this.forceY = Math.sin(angle) * this.recoil;
+
+        this.playerSprite.body.setAcceleration(this.forceX, this.forceY);
     }
 
     aimTowardsCursor(){

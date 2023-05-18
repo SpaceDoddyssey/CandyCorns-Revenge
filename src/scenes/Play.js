@@ -5,10 +5,12 @@ class Play extends Phaser.Scene {
 
     preload(){
         this.load.path = 'assets/';
-        this.load.image('player',       'ph_player.png');
+        this.load.image('player_idle',  'Candy_Corn_Idle.png');
+        this.load.image('player_firing','Candy_Corn_Firing.png');
         this.load.image('background',   'ph_background.png');
-        this.load.image('gun',          'ph_gun.png');
+        this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'ph_bullet.png');
+        this.load.image('enemy',        'ph_enemy.png');
     }
     
     create() {
@@ -39,9 +41,27 @@ class Play extends Phaser.Scene {
         this.background.setDepth(-100);
 
         //Spawn player
-        this.player = new Player(this, game.config.width/2, game.config.height/2, 'player').setOrigin(0.5, 0.5);
-        this.player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
-        this.player.gun.playerSprite = this.player;
+        player = new Player(this, game.config.width/2, game.config.height/2, 'player_idle').setOrigin(0.5, 0.5);
+        player.firingSprite = 'player_firing';
+        player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
+        player.gun.playerSprite = player;
+
+        this.enemySpawnTimer = 200;
+        this.enemySpawnRate = 300;
+        this.enemiesPerSpawn = 3;
+    }
+
+    spawnEnemy(){
+        var minDistFromPlayer = 150;
+
+        var spawnPoint = new Phaser.Math.Vector2();
+        do {
+          spawnPoint.x = Phaser.Math.RND.between(0, game.config.width);
+          spawnPoint.y = Phaser.Math.RND.between(0, game.config.height);
+        } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
+        
+        var enemy = new ChocoBar(this, spawnPoint.x, spawnPoint.y, 'enemy').setOrigin(0.5, 0.5);
+        enemies.push(enemy);
     }
 
     update() {
@@ -53,10 +73,18 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         } 
 
-        this.player.update();
+        player.update();
         playerBullets.forEach(bullet => {
             bullet.update();
         })
+
+        this.enemySpawnTimer--;
+        if(this.enemySpawnTimer < 0){
+            for(let i = 0; i < this.enemiesPerSpawn; i++){
+                this.spawnEnemy();
+            }
+            this.enemySpawnTimer = this.enemySpawnRate;
+        }
     }
 
     initCanvasAndUI(){

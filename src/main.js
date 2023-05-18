@@ -20,7 +20,9 @@ let borderPadding = borderUISize / 10;
 
 let PlayButton, Ready;
 
+let player;
 let playerBullets = [];
+let enemies = [];
 
 let manualMoveSpeed = 1;
 

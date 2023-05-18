@@ -10,6 +10,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.gun;
         this.idleSprite = texture;
         this.firingSprite;
+        this.decelerate = 0.8;
 
         this.velocity = new Phaser.Math.Vector2();
     }
@@ -61,5 +62,12 @@ class Player extends Phaser.GameObjects.Sprite {
         this.velocity.normalize();
         
         this.body.setVelocity(this.velocity.x * this.moveSpeed, this.velocity.y * this.moveSpeed);
+
+        if (this.forceX != 0 && 1 < Math.abs(this.forceX)) this.forceX *= this.decelerate;
+        else this.forceX = 0;
+        if (this.forceY != 0 && 1 < Math.abs(this.forceY)) this.forceY *= this.decelerate;
+        else this.forceY = 0;
+
+        this.body.setAcceleration(this.forceX, this.forceY);
     }
 }

@@ -9,9 +9,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.fireRate = 20;
         this.fireCooldown = 0;  
 
-        //Adjust decelerate to change how fast the player declerates from the recoil
-        //  - decelerate should be within the range 0 < decelerate < 1
-        //  - the smaller decelerate is, the faster the player will slow down, and vice versa.
+
         this.distanceFromPlayer = 66; 
         this.playerSprite; //Set by Play
 
@@ -37,7 +35,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         var pointer = this.scene.input.activePointer;
 
         // Calculate angle between player sprite and cursor position
-        var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x, pointer.y);
+        var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x + this.scene.cameras.main.scrollX, pointer.y + this.scene.cameras.main.scrollY);
         if (angle > Math.PI / 2 || angle < -Math.PI / 2){
             this.flipY = true;
         } else {

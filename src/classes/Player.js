@@ -2,20 +2,28 @@ class Player extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
 
+        // Player Object
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.scale = 0.1;  
-        this.isFiring = false;    
-        this.moveSpeed = 15;         // pixels per frame
-        this.gun;
         this.idleSprite = texture;
-        this.firingSprite;
-        this.decelerate = 0.8;
 
+        // Gun Vars
+        this.firingSprite;
+        this.isFiring = false;            
+        this.gun;
+
+        // Movement
+        this.decelerate = 0.8;
+        this.moveSpeed = 15; //pixels per frame
         this.velocity = new Phaser.Math.Vector2();
     }
 
-    fire(){
+    // Player Functions
+
+    fire() {
+        // Fires the Player's gun
+        
         this.gun.fire();
 
         var pointer = this.scene.input.activePointer;
@@ -27,9 +35,19 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     update() {
+        this.gunUpdate();
+
+        this.moveUpdate();
+
+        this.decelUpdate();
+    }
+
+    // Player Updates
+
+    gunUpdate() {
+        // Player Firing Logic
         this.gun.update(); 
 
-        //Firing logic
         if (game.input.activePointer.isDown){
             console.log("firing")
             this.isFiring = true;
@@ -44,6 +62,10 @@ class Player extends Phaser.GameObjects.Sprite {
         } else {
             this.setTexture(this.idleSprite);
         }
+    }
+
+    moveUpdate() {
+        // Player Directional Movement
 
         this.velocity.set(0,0);
 
@@ -62,6 +84,10 @@ class Player extends Phaser.GameObjects.Sprite {
         this.velocity.normalize();
         
         this.body.setVelocity(this.velocity.x * this.moveSpeed, this.velocity.y * this.moveSpeed);
+    }
+
+    decelUpdate() {
+        // Decelerates the Player after recoil movement
 
         if (this.forceX != 0 && 1 < Math.abs(this.forceX)) this.forceX *= this.decelerate;
         else this.forceX = 0;

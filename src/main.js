@@ -1,7 +1,10 @@
 let config = {
     type: Phaser.CANVAS,
-    width: 640,
-    height: 480,
+    width: 960,
+    height: 720,
+    scale: {
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
     physics: {
         default: 'arcade',
         arcade: {
@@ -27,3 +30,5 @@ let enemies = [];
 let manualMoveSpeed = 1;
 
 let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC;
+
+let map = null;

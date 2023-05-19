@@ -4,9 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
-        // this.load.audio('sfx_lobby', './assets/lobbymusic.wav');
-        // this.load.audio('sfx_fail', './assets/fail.wav');
-        // this.load.audio('sfx_success', './assets/positivebeep.wav');
+      
     }
 
     create() {

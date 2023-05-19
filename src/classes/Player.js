@@ -14,6 +14,10 @@ class Player extends Phaser.GameObjects.Sprite {
         this.gun;
 
         // Movement
+
+        //Adjust decelerate to change how fast the player declerates from the recoil
+        //  - decelerate should be within the range 0 < decelerate < 1
+        //  - the smaller decelerate is, the faster the player will slow down, and vice versa.
         this.decelerate = 0.8;
         this.moveSpeed = 15; //pixels per frame
         this.velocity = new Phaser.Math.Vector2();
@@ -23,13 +27,14 @@ class Player extends Phaser.GameObjects.Sprite {
 
     fire() {
         // Fires the Player's gun
-        
+
         this.gun.fire();
 
         var pointer = this.scene.input.activePointer;
-        var angle = Phaser.Math.Angle.Between(this.x, this.y, pointer.x, pointer.y);
+        var angle = Phaser.Math.Angle.Between(this.x, this.y, pointer.x + this.scene.cameras.main.scrollX, pointer.y + this.scene.cameras.main.scrollY);
         this.forceX = Math.cos(angle) * this.gun.recoil;
         this.forceY = Math.sin(angle) * this.gun.recoil;
+        //console.log("forceX: ", this.forceX, " forceY: ", this.forceY)
 
         this.body.setAcceleration(this.forceX, this.forceY);
     }
@@ -49,7 +54,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.gun.update(); 
 
         if (game.input.activePointer.isDown){
-            console.log("firing")
+            //console.log("firing")
             this.isFiring = true;
         } else {
             this.isFiring = false;

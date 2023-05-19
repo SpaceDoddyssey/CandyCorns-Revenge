@@ -3,7 +3,7 @@ class Play extends Phaser.Scene {
         super("playScene");
     }
 
-    preload(){
+    preload() {
         this.load.path = 'assets/';
         this.load.image('player_idle',  'Candy_Corn_Idle.png');
         this.load.image('player_firing','Candy_Corn_Firing.png');
@@ -11,6 +11,8 @@ class Play extends Phaser.Scene {
         this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'ph_bullet.png');
         this.load.image('enemy',        'ph_enemy.png');
+        this.load.image('tilesetImage', 'tileset.png');
+        this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');
     }
     
     create() {
@@ -30,25 +32,42 @@ class Play extends Phaser.Scene {
         //Initialize score
         this.score = 0;
 
-        this.initCanvasAndUI();
-
         // event
         //this.input.on('pointerdown',this.startDrag,this);
 
-        //Spawn the background
+        /*//Spawn the background
         this.background = this.add.sprite(game.config.width / 2, game.config.height / 2, 'background');
         this.background.scale = 0.4;
-        this.background.setDepth(-100);
+        this.background.setDepth(-100);*/
 
-        //Spawn player
-        player = new Player(this, game.config.width/2, game.config.height/2, 'player_idle').setOrigin(0.5, 0.5);
+        map = this.add.tilemap('tilemapJSON');
+        const tileset = map.addTilesetImage('tileset', 'tilesetImage');
+        const bgLayer = map.createLayer('Background', tileset, 0, 0);
+        const treeLayer = map.createLayer('Trees', tileset, 0, 0);
+
+        treeLayer.setCollisionByProperty({collide: true});
+
+        // spawn player
+
+        const playerSpawn = map.findObject('Spawns', obj => obj.name === 'playerSpawn');
+
+        player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
         player.firingSprite = 'player_firing';
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
         player.gun.playerSprite = player;
 
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.startFollow(player, true, 0.25, 0.25);
+        this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels);
+
+        player.body.setCollideWorldBounds(true);
+        this.physics.add.collider(player, treeLayer);
+
         this.enemySpawnTimer = 200;
         this.enemySpawnRate = 300;
         this.enemiesPerSpawn = 3;
+
+        this.initCanvasAndUI();
     }
 
     spawnEnemy(){
@@ -56,8 +75,8 @@ class Play extends Phaser.Scene {
 
         var spawnPoint = new Phaser.Math.Vector2();
         do {
-          spawnPoint.x = Phaser.Math.RND.between(0, game.config.width);
-          spawnPoint.y = Phaser.Math.RND.between(0, game.config.height);
+          spawnPoint.x = Phaser.Math.RND.between(0, map.widthInPixels);
+          spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
         
         var enemy = new ChocoBar(this, spawnPoint.x, spawnPoint.y, 'enemy').setOrigin(0.5, 0.5);
@@ -65,6 +84,8 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        this.scoreCounter.x = this.cameras.main.scrollX;
+        this.scoreCounter.y = this.cameras.main.scrollY;
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -90,14 +111,15 @@ class Play extends Phaser.Scene {
     initCanvasAndUI(){
         // white borders
         this.gameOver = false;
-        let rec = this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0, 0);
+
+        /*let rec = this.add.rectangle(0, 0, game.config.width, borderUISize, 0x000000).setOrigin(0, 0);
         rec.setDepth(100);
         rec = this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0x000000).setOrigin(0, 0);
         rec.setDepth(100);
         rec = this.add.rectangle(0, 0, borderUISize, game.config.height, 0x000000).setOrigin(0, 0);
         rec.setDepth(100);
         rec = this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0x000000).setOrigin(0, 0);
-        rec.setDepth(100);
+        rec.setDepth(100);*/
 
         this.playAreaLeftPad  = 320;
         this.playAreaRightPad = 35;
@@ -122,6 +144,8 @@ class Play extends Phaser.Scene {
         const gameOverConfig = Object.assign({}, scoreConfig, { fontSize: '56px', align: 'center', fixedWidth: 375 });
         const restartConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 380 });
 
-        this.scoreCounter = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding, 'Score: ' + this.score, scoreConfig);
+        // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
+
+        this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + this.score, scoreConfig);
     }
 }

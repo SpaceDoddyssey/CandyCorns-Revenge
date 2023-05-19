@@ -15,8 +15,8 @@ class PlayerBullet extends Phaser.GameObjects.Sprite {
         this.x += Math.cos(this.rotation) * this.speed;
         this.y += Math.sin(this.rotation) * this.speed;
 
-        if(this.x < -this.width  || this.x > game.config.width + this.width 
-            || this.y < -this.height || this.y > game.config.height + this.height){
+        if(this.x < -this.width  || this.x > map.widthInPixels + this.width 
+            || this.y < -this.height || this.y > map.heightInPixels + this.height){
                 this.destroy();
             }
     }

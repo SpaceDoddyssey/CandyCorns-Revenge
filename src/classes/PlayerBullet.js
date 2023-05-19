@@ -6,7 +6,8 @@ class PlayerBullet extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this);
         this.scale = 0.3;
         this.body.setCircle(22);
-
+        
+        this.damage = 1;
         this.speed = 4;
         this.rotation;
     }

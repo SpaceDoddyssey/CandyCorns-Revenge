@@ -10,7 +10,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.fireCooldown = 0;  
 
 
-        this.distanceFromPlayer = 66; 
+        this.distanceFromPlayer = 36; 
         this.playerSprite; //Set by Play
 
         //scene.input.on('pointerdown', this.fire.bind(this));

@@ -32,14 +32,7 @@ class Play extends Phaser.Scene {
         //Initialize score
         this.score = 0;
 
-        // event
-        //this.input.on('pointerdown',this.startDrag,this);
-
-        /*//Spawn the background
-        this.background = this.add.sprite(game.config.width / 2, game.config.height / 2, 'background');
-        this.background.scale = 0.4;
-        this.background.setDepth(-100);*/
-
+        //Set up tilemap
         map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('tileset', 'tilesetImage');
         const bgLayer = map.createLayer('Background', tileset, 0, 0);
@@ -48,9 +41,7 @@ class Play extends Phaser.Scene {
         treeLayer.setCollisionByProperty({collide: true});
 
         // spawn player
-
         const playerSpawn = map.findObject('Spawns', obj => obj.name === 'playerSpawn');
-
         player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
         player.firingSprite = 'player_firing';
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
@@ -96,7 +87,15 @@ class Play extends Phaser.Scene {
 
         player.update();
         playerBullets.forEach(bullet => {
-            bullet.update();
+            bullet.update(); })
+        enemies.forEach((enemy, index, array) => {
+            enemy.update(); 
+            if (enemy.markedForDeath) {
+                array.splice(index, 1);
+                enemy.destroy();
+                //console.log(this);
+                this.addScore(enemy.scoreValue);
+            }
         })
 
         this.enemySpawnTimer--;
@@ -107,6 +106,25 @@ class Play extends Phaser.Scene {
             this.enemySpawnTimer = this.enemySpawnRate;
         }
     }
+
+    addScore(points){
+        this.score += points;
+        this.scoreCounter.text = 'Score: ' + this.score;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     initCanvasAndUI(){
         // white borders

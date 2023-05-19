@@ -25,6 +25,13 @@ class Player extends Phaser.GameObjects.Sprite {
 
     // Player Functions
 
+    takeDamage(amount) {
+        if (playerHp > 0) {
+            playerHp -= amount;
+        }
+        else playerHp = 0;
+    }
+
     fire() {
         // Fires the Player's gun
 
@@ -45,6 +52,13 @@ class Player extends Phaser.GameObjects.Sprite {
         this.moveUpdate();
 
         this.decelUpdate();
+
+        enemyBullets.forEach(bullet => {
+            this.scene.physics.overlap(this, bullet, (enemy, collidedBullet) => {
+                collidedBullet.destroy();
+                this.takeDamage(bullet.damage);
+            }, null, this);
+        });
     }
 
     // Player Updates

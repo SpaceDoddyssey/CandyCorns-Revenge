@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('background',   'ph_background.png');
         this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'ph_bullet.png');
+        this.load.image('enemybullet', 'eh_bullet.png');
         this.load.image('enemy',        'ph_enemy.png');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');
@@ -71,12 +72,12 @@ class Play extends Phaser.Scene {
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
         
         var enemy = new ChocoBar(this, spawnPoint.x, spawnPoint.y, 'enemy').setOrigin(0.5, 0.5);
+        enemy.player = player;
         enemies.push(enemy);
     }
 
     update() {
-        this.scoreCounter.x = this.cameras.main.scrollX;
-        this.scoreCounter.y = this.cameras.main.scrollY;
+        this.uiUpdate();
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
             this.scene.restart();
         }
@@ -86,7 +87,10 @@ class Play extends Phaser.Scene {
         } 
 
         player.update();
+        this.hpCounter.text = 'HP: ' + playerHp;
         playerBullets.forEach(bullet => {
+            bullet.update(); })
+        enemyBullets.forEach(bullet => {
             bullet.update(); })
         enemies.forEach((enemy, index, array) => {
             enemy.update(); 
@@ -107,24 +111,20 @@ class Play extends Phaser.Scene {
         }
     }
 
+    uiUpdate() {
+        this.scoreCounter.x = this.cameras.main.scrollX;
+        this.scoreCounter.y = this.cameras.main.scrollY;
+
+        // 170 is the Fixed Width value of scoreConfig, if there's a better way of grabbing that value, please replace the value
+        
+        this.hpCounter.x = this.cameras.main.scrollX + game.config.width - 170;
+        this.hpCounter.y = this.cameras.main.scrollY;
+    }
+
     addScore(points){
         this.score += points;
         this.scoreCounter.text = 'Score: ' + this.score;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     initCanvasAndUI(){
         // white borders
@@ -165,5 +165,6 @@ class Play extends Phaser.Scene {
         // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
 
         this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + this.score, scoreConfig);
+        this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + this.score, scoreConfig);
     }
 }

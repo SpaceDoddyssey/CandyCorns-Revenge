@@ -31,7 +31,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.fireCooldown = this.fireRate;
     }
 
-    aimTowardsCursor(){
+    aimTowardsCursor() {
         var pointer = this.scene.input.activePointer;
 
         // Calculate angle between player sprite and cursor position

@@ -28,7 +28,7 @@ class Menu extends Phaser.Scene {
         menuConfig.backgroundColor = '#00FF00';
         const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 6, 'PLAY', menuConfig).setOrigin(0.5).setInteractive();
         //-------------------------------------------
-        Ready = true; //CHANGE TO REENABLE THE MENU
+        Ready = false; //CHANGE TO REENABLE THE MENU
         //-------------------------------------------
         PlayButton.on('pointerdown', function (pointer)
         {

@@ -10,13 +10,18 @@ class Play extends Phaser.Scene {
         this.load.image('background',   'ph_background.png');
         this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'ph_bullet.png');
-        this.load.image('enemybullet', 'eh_bullet.png');
+        this.load.image('enemybullet',  'eh_bullet.png');
+        this.load.image('chocobar',     'chocobar.png');
+        this.load.image('choco_gun',     'choco_gun.png');
         this.load.image('enemy',        'ph_enemy.png');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');
     }
     
     create() {
+        enemyBullets = [];
+        enemies = [];
+        playerBullets = [];
         if (game.settings.audioPlaying == true) {
             let backgroundMusic = this.sound.add('sfx_lobby');
             backgroundMusic.loop = true;
@@ -29,9 +34,6 @@ class Play extends Phaser.Scene {
         keyDOWN  = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyESC   = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-
-        //Initialize score
-        this.score = 0;
 
         //Set up tilemap
         map = this.add.tilemap('tilemapJSON');
@@ -71,15 +73,17 @@ class Play extends Phaser.Scene {
           spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
         
-        var enemy = new ChocoBar(this, spawnPoint.x, spawnPoint.y, 'enemy').setOrigin(0.5, 0.5);
+        var enemy = new ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
         enemy.player = player;
+        enemy.gun = new ChocoGun(this, 0, 0, 'choco_gun');
+        enemy.gun.chocoSprite = enemy;
         enemies.push(enemy);
     }
 
     update() {
         this.uiUpdate();
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyR)) {
-            this.scene.restart();
+        if (this.gameOver) {
+            this.scene.start("gameOverScene");
         }
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {
             this.game.sound.stopAll();
@@ -88,6 +92,7 @@ class Play extends Phaser.Scene {
 
         player.update();
         this.hpCounter.text = 'HP: ' + playerHp;
+        if (playerHp == 0) this.gameOver = true;
         playerBullets.forEach(bullet => {
             bullet.update(); })
         enemyBullets.forEach(bullet => {
@@ -97,6 +102,7 @@ class Play extends Phaser.Scene {
             if (enemy.markedForDeath) {
                 array.splice(index, 1);
                 enemy.destroy();
+                enemy.gun.destroy();
                 //console.log(this);
                 this.addScore(enemy.scoreValue);
             }
@@ -122,8 +128,8 @@ class Play extends Phaser.Scene {
     }
 
     addScore(points){
-        this.score += points;
-        this.scoreCounter.text = 'Score: ' + this.score;
+        score += points;
+        this.scoreCounter.text = 'Score: ' + score;
     }
 
     initCanvasAndUI(){
@@ -164,7 +170,7 @@ class Play extends Phaser.Scene {
 
         // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
 
-        this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + this.score, scoreConfig);
-        this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + this.score, scoreConfig);
+        this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + score, scoreConfig);
+        this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + score, scoreConfig);
     }
 }

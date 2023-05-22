@@ -38,8 +38,10 @@ class Gun extends Phaser.GameObjects.Sprite {
         var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x + this.scene.cameras.main.scrollX, pointer.y + this.scene.cameras.main.scrollY);
         if (angle > Math.PI / 2 || angle < -Math.PI / 2){
             this.flipY = true;
+            this.playerSprite.flipX = true;
         } else {
             this.flipY = false;
+            this.playerSprite.flipX = false;
         }
         
         this.rotation = angle;

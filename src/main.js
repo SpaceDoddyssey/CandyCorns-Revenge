@@ -11,7 +11,7 @@ let config = {
             debug: true,
         }
     },
-    scene: [ Menu, Play ]
+    scene: [ Menu, Play, GameOver ]
 }
 
 let game = new Phaser.Game(config);
@@ -21,16 +21,26 @@ let game = new Phaser.Game(config);
 let borderUISize = game.config.height / 35;
 let borderPadding = borderUISize / 10;
 
+let centerX = game.config.width/2;
+let centerY = game.config.height/2;
+
+const textSpacer = 64;
+
 let PlayButton, Ready;
 
 let player;
-let playerHp = 100;
+let startingHp = 10;
+let playerHp = startingHp;
 let playerBullets = [];
+let highScore = 0;
+let newHighScore = false;
+let score = 0;
+
 let enemyBullets = [];
 let enemies = [];
 
 let manualMoveSpeed = 1;
 
-let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC;
+let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR;
 
 let map = null;

@@ -6,7 +6,7 @@ class ChocoGun extends Phaser.GameObjects.Sprite {
         this.scale = 0.1;
 
         this.fireRate = 250;
-        this.fireCooldown = 0;  
+        this.fireCooldown = 20;  
         this.isFiring = false;
 
         this.distanceFromChoco = 36; 

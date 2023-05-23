@@ -19,7 +19,7 @@ class Player extends Phaser.GameObjects.Sprite {
         //  - decelerate should be within the range 0 < decelerate < 1
         //  - the smaller decelerate is, the faster the player will slow down, and vice versa.
         this.decelerate = 0.8;
-        this.moveSpeed = 15; //pixels per frame
+        this.moveSpeed = manualMoveSpeed; //pixels per frame
         this.velocity = new Phaser.Math.Vector2();
     }
 

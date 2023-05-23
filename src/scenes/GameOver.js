@@ -46,13 +46,14 @@ class GameOver extends Phaser.Scene {
             newHighScore = true;
         }
 
-        // add GAME OVER text
-        if(newHighScore) {
-            this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding - 220, 'New High Score!', textConfig).setOrigin(0.5);
-        }
+        //Add text 
+        this.add.text(centerX, centerY - textSpacer*3, 'Game Over', textConfig).setOrigin(0.5);
+        //if(newHighScore) {
+            this.add.text(centerX, centerY - borderUISize - borderPadding, 'New High Score!', textConfig).setOrigin(0.5);
+        //}
 
-        this.add.text(centerX, centerY + textSpacer, `${score} number of enemies defeated`, textConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer*2,`This browser's best: ${highScore}`, textConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer, `Number of enemies defeated: ${score}`, textConfig).setOrigin(0.5);
+        this.add.text(centerX, centerY + textSpacer*2,`Local high score: ${highScore}`, textConfig).setOrigin(0.5);
         this.add.text(centerX, centerY + textSpacer*3, `Press R to Restart`, textConfig).setOrigin(0.5);
     }
 

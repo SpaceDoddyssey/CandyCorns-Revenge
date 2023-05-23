@@ -39,7 +39,7 @@ let score = 0;
 let enemyBullets = [];
 let enemies = [];
 
-let manualMoveSpeed = 1;
+let manualMoveSpeed = 30;
 
 let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR;
 

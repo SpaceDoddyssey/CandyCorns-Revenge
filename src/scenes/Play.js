@@ -10,9 +10,9 @@ class Play extends Phaser.Scene {
         this.load.image('background',   'ph_background.png');
         this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'ph_bullet.png');
-        this.load.image('enemybullet',  'eh_bullet.png');
+        this.load.image('enemybullet',  'ph_enemy_bullet.png');
         this.load.image('chocobar',     'chocobar.png');
-        this.load.image('choco_gun',     'choco_gun.png');
+        this.load.image('choco_gun',    'choco_gun.png');
         this.load.image('enemy',        'ph_enemy.png');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');

@@ -1,4 +1,4 @@
-class ChocoBar extends Enemy {
+class e1ChocoBar extends Enemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
 

@@ -11,8 +11,8 @@ class Play extends Phaser.Scene {
         this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'ph_bullet.png');
         this.load.image('enemybullet',  'ph_enemy_bullet.png');
-        this.load.image('chocobar',     'chocobar.png');
-        this.load.image('choco_gun',    'choco_gun.png');
+        this.load.image('chocobar',     'e1_chocobar.png');
+        this.load.image('e1_gun',    'e1_gun.png');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');
     }
@@ -74,7 +74,7 @@ class Play extends Phaser.Scene {
         
         var enemy = new ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
         enemy.player = player;
-        enemy.gun = new ChocoGun(this, 0, 0, 'choco_gun');
+        enemy.gun = new ChocoGun(this, 0, 0, 'e1_gun');
         enemy.gun.chocoSprite = enemy;
         enemies.push(enemy);
     }

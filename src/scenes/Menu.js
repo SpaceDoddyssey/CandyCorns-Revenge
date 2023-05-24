@@ -5,8 +5,8 @@ class Menu extends Phaser.Scene {
 
     preload() {
         this.load.path = 'assets/';
-        this.load.audio('gunfire', 'gunfire.wav');
-        this.load.audio('hit', 'hitHurt.wav');
+        this.load.audio('gunfire', 'player_gun_sound.wav');
+        this.load.audio('hit', 'player_damaged.wav');
         this.load.audio('death', 'enemydeath.wav');
     }
 

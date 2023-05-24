@@ -26,6 +26,7 @@ class Player extends Phaser.GameObjects.Sprite {
     // Player Functions
 
     takeDamage(amount) {
+        this.scene.sound.play('hit');
         if (playerHp > 0) {
             playerHp -= amount;
         }

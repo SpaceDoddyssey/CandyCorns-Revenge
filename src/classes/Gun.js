@@ -9,7 +9,6 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.fireRate = 20;
         this.fireCooldown = 0;  
 
-
         this.distanceFromPlayer = 36; 
         this.playerSprite; //Set by Play
 
@@ -25,6 +24,7 @@ class Gun extends Phaser.GameObjects.Sprite {
     }
 
     fire() {
+        this.scene.sound.play('gunfire');
         let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet').setOrigin(0.5, 0.5);
         bullet.rotation = this.rotation;
         playerBullets.push(bullet);

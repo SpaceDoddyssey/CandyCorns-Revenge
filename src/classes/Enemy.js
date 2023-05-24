@@ -27,14 +27,15 @@ class Enemy extends Phaser.GameObjects.Sprite {
         });
     }
 
-    takeDamage(amount){
+    takeDamage(amount) {
         this.hp -= amount;
         if(this.hp <= 0){
             this.die();
         }
     }
     
-    die(){
+    die() {
+        this.scene.sound.play('death');
         this.markedForDeath = true;
     }
 } 

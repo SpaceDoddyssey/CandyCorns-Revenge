@@ -13,6 +13,7 @@ class Play extends Phaser.Scene {
         this.load.image('enemybullet',  'ph_enemy_bullet.png');
         this.load.image('chocobar',     'e1_chocobar.png');
         this.load.image('e1_gun',    'e1_gun.png');
+        this.load.atlas('lollipop', 'e2Lollipop.png', 'e2Lollipop.json');
         this.load.image('tilesetImage', 'tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');
     }
@@ -63,7 +64,7 @@ class Play extends Phaser.Scene {
         this.initCanvasAndUI();
     }
 
-    spawnEnemy(){
+    spawnEnemy() {
         var minDistFromPlayer = 150;
 
         var spawnPoint = new Phaser.Math.Vector2();
@@ -72,10 +73,19 @@ class Play extends Phaser.Scene {
           spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
         
-        var enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
+        var randomEnemy = Phaser.Math.RND.between(1, 2);
+        var enemy;
+
+        if (randomEnemy == 1) {
+            enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
+            enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
+            enemy.gun.e1Sprite = enemy;
+        }
+        else if (randomEnemy == 2) {
+            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        }
+
         enemy.player = player;
-        enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
-        enemy.gun.e1Sprite = enemy;
         enemies.push(enemy);
     }
 
@@ -101,7 +111,7 @@ class Play extends Phaser.Scene {
             if (enemy.markedForDeath) {
                 array.splice(index, 1);
                 enemy.destroy();
-                enemy.gun.destroy();
+                if (enemy.hasGun) enemy.gun.destroy();
                 //console.log(this);
                 this.addScore(enemy.scoreValue);
             }

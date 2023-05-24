@@ -10,7 +10,7 @@ class e1Gun extends Phaser.GameObjects.Sprite {
         this.isFiring = false;
 
         this.e1Distance = 36; 
-        this.e1Sprite; //Set by Play
+        this.e1Sprite;
 
         //scene.input.on('pointerdown', this.fire.bind(this));
     }

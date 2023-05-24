@@ -7,6 +7,8 @@ class Player extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this);
         this.scale = 0.1;  
         this.idleSprite = texture;
+        this.iframes = false;
+        //this.scene.time.addEvent({delay: 2000, callback: this.iframes = false, callbackScope: this, loop: true });
 
         // Gun Vars
         this.firingSprite;
@@ -26,11 +28,14 @@ class Player extends Phaser.GameObjects.Sprite {
     // Player Functions
 
     takeDamage(amount) {
-        this.scene.sound.play('hit');
-        if (playerHp > 0) {
-            playerHp -= amount;
+        if (!this.iframes) {
+            this.scene.sound.play('hit');
+            if (playerHp > 0) {
+                playerHp -= amount;
+            }
+            else playerHp = 0;
+            this.iframes = true;
         }
-        else playerHp = 0;
     }
 
     fire() {
@@ -48,6 +53,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     update() {
+        console.log(this.iframes);
         this.gunUpdate();
 
         this.moveUpdate();

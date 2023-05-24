@@ -75,7 +75,7 @@ class Play extends Phaser.Scene {
         var enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
         enemy.player = player;
         enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
-        enemy.gun.chocoSprite = enemy;
+        enemy.gun.e1Sprite = enemy;
         enemies.push(enemy);
     }
 

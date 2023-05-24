@@ -9,8 +9,8 @@ class e1Gun extends Phaser.GameObjects.Sprite {
         this.fireCooldown = 20;  
         this.isFiring = false;
 
-        this.distanceFromChoco = 36; 
-        this.chocoSprite; //Set by Play
+        this.e1Distance = 36; 
+        this.e1Sprite; //Set by Play
 
         //scene.input.on('pointerdown', this.fire.bind(this));
     }
@@ -21,7 +21,7 @@ class e1Gun extends Phaser.GameObjects.Sprite {
             this.fireCooldown--;
         }
 
-        if (Math.abs(this.x - this.chocoSprite.player.x) < 300 && Math.abs(this.y - this.chocoSprite.player.y)) {
+        if (Math.abs(this.x - this.e1Sprite.player.x) < 300 && Math.abs(this.y - this.e1Sprite.player.y)) {
             this.isFiring = true;
         } else {
             this.isFiring = false;
@@ -43,19 +43,19 @@ class e1Gun extends Phaser.GameObjects.Sprite {
 
     aimTowardsPlayer() {
         // Calculate angle between player sprite and cursor position
-        var angle = Phaser.Math.Angle.Between(this.x, this.y, this.chocoSprite.player.x, this.chocoSprite.player.y);
+        var angle = Phaser.Math.Angle.Between(this.x, this.y, this.e1Sprite.player.x, this.e1Sprite.player.y);
         if (angle > Math.PI / 2 || angle < -Math.PI / 2){
             this.flipY = true;
-            this.chocoSprite.flipX = true;
+            this.e1Sprite.flipX = true;
         } else {
             this.flipY = false;
-            this.chocoSprite.flipX = false;
+            this.e1Sprite.flipX = false;
         }
         
         this.rotation = angle;
 
-        var targetX = this.chocoSprite.x + Math.cos(angle) * this.distanceFromChoco;
-        var targetY = this.chocoSprite.y + Math.sin(angle) * this.distanceFromChoco;
+        var targetX = this.e1Sprite.x + Math.cos(angle) * this.e1Distance;
+        var targetY = this.e1Sprite.y + Math.sin(angle) * this.e1Distance;
 
         this.x = targetX;
         this.y = targetY;

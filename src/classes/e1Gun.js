@@ -5,7 +5,7 @@ class e1Gun extends Phaser.GameObjects.Sprite {
         this.scene = scene;
         this.scale = 0.1;
 
-        this.fireRate = 250;
+        this.fireRate = 150;
         this.fireCooldown = 20;  
         this.isFiring = false;
 

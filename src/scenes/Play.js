@@ -64,8 +64,8 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(player, objectLayer);
         this.physics.add.collider(player, borderLayer);
 
-        this.enemySpawnTimer = 200;
-        this.enemySpawnRate = 300;
+        this.enemySpawnTimer = 50;
+        this.enemySpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
         this.initCanvasAndUI();
@@ -80,16 +80,15 @@ class Play extends Phaser.Scene {
           spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
         
-        var randomEnemy = Phaser.Math.RND.between(1, 2);
+        var randomEnemy = Phaser.Math.RND.between(1, 4);
         var enemy;
 
         if (randomEnemy == 1) {
+            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        } else {
             enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
             enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
             enemy.gun.e1Sprite = enemy;
-        }
-        else if (randomEnemy == 2) {
-            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
         }
 
         enemy.player = player;

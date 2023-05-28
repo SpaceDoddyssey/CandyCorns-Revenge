@@ -24,7 +24,7 @@ class Gun extends Phaser.GameObjects.Sprite {
     }
 
     fire() {
-        this.scene.sound.play('gunfire');
+        this.scene.sound.play('gunfire', { volume: 0.3 });
         let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet').setOrigin(0.5, 0.5);
         bullet.rotation = this.rotation;
         playerBullets.push(bullet);

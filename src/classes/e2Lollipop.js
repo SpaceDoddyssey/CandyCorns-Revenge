@@ -47,14 +47,20 @@ class e2Lollipop extends Enemy {
     }
     
     update() {
-        if (this.x < this.player.x) this.x += 0.5;
-        else this.x -= 0.5;
+        if (this.x < this.player.x) {
+            this.x += 0.5;
+            this.flipX = false;
+        }
+        else {
+            this.x -= 0.5;
+            this.flipX = true;
+        }
         if (this.y < this.player.y) this.y += 0.5;
         else this.y -= 0.5;
 
-        /*if (Math.abs(this.x - this.player.x) < 3 && Math.abs(this.y - this.player.y) < 3) {
-            this.player.takeDamage();
-        }*/
+        if (Math.abs(this.x - this.player.x) < this.player.width*this.player.scale && Math.abs(this.y - this.player.y) < this.player.height*this.player.scale) {
+            this.player.takeDamage(1, 150);
+        }
 
         /*this.velocity.set(0,0);
 

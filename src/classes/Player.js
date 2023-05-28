@@ -7,7 +7,7 @@ class Player extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this);
         this.scale = 0.1;  
         this.idleSprite = texture;
-        this.iframes = false;
+        this.iframes = 100;
         //this.scene.time.addEvent({delay: 2000, callback: this.iframes = false, callbackScope: this, loop: true });
 
         // Gun Vars
@@ -27,14 +27,15 @@ class Player extends Phaser.GameObjects.Sprite {
 
     // Player Functions
 
-    takeDamage(amount) {
-        if (!this.iframes) {
+    takeDamage(amount, iframesGiven) {
+        if (this.iframes == 0) {
+            //damage sprite
             this.scene.sound.play('hit');
             if (playerHp > 0) {
                 playerHp -= amount;
             }
             else playerHp = 0;
-            this.iframes = true;
+            this.iframes = iframesGiven;
         }
     }
 
@@ -53,7 +54,12 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        console.log(this.iframes);
+        if (this.iframes > 0) {
+            this.iframes--;
+        } else {
+            //recover
+        }
+
         this.gunUpdate();
 
         this.moveUpdate();
@@ -63,7 +69,7 @@ class Player extends Phaser.GameObjects.Sprite {
         enemyBullets.forEach(bullet => {
             this.scene.physics.overlap(this, bullet, (enemy, collidedBullet) => {
                 collidedBullet.destroy();
-                this.takeDamage(bullet.damage);
+                this.takeDamage(bullet.damage, 100);
             }, null, this);
         });
     }

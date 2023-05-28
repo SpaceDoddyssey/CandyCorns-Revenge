@@ -14,8 +14,8 @@ class Play extends Phaser.Scene {
         this.load.image('chocobar',     'e1_chocobar.png');
         this.load.image('e1_gun',    'e1_gun.png');
         this.load.atlas('lollipop', 'e2Lollipop.png', 'e2Lollipop.json');
-        this.load.image('tilesetImage', 'tileset.png');
-        this.load.tilemapTiledJSON('tilemapJSON', 'tilemap.json');
+        this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
+        this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset.json');
     }
     
     create() {
@@ -23,9 +23,9 @@ class Play extends Phaser.Scene {
         enemies = [];
         playerBullets = [];
         if (game.settings.audioPlaying == true) {
-            let backgroundMusic = this.sound.add('sfx_lobby');
+            /*let backgroundMusic = this.sound.add('sfx_lobby');
             backgroundMusic.loop = true;
-            backgroundMusic.play();
+            backgroundMusic.play();*/
             game.settings.audioPlaying = true;
         }
 
@@ -37,14 +37,20 @@ class Play extends Phaser.Scene {
 
         //Set up tilemap
         map = this.add.tilemap('tilemapJSON');
-        const tileset = map.addTilesetImage('tileset', 'tilesetImage');
-        const bgLayer = map.createLayer('Background', tileset, 0, 0);
-        const treeLayer = map.createLayer('Trees', tileset, 0, 0);
+        const tileset = map.addTilesetImage('CandyCornRevenge_Tileset', 'tilesetImage');
+        const groundLayer = map.createLayer('Ground', tileset, 0, 0);
+        const borderLayer = map.createLayer('Border', tileset, 0, 0);
+        const objectLayer = map.createLayer('Objects', tileset, 0, 0);
+        let brokenShotgunLayer = map.createLayer('BrokenShotgun', tileset, 0, 0);
+        const spikeLayer = map.createLayer('Spikes', tileset, 0, 0);
+        const forwardSpeedTileLayer = map.createLayer('ForwardSpeedTiles', tileset, 0, 0);
+        const rightSpeedTileLayer = map.createLayer('RightSpeedTiles', tileset, 0, 0);
 
-        treeLayer.setCollisionByProperty({collide: true});
+        objectLayer.setCollisionByProperty({playerCollidable: true});
+        borderLayer.setCollisionByProperty({playerCollidable: true});
 
         // spawn player
-        const playerSpawn = map.findObject('Spawns', obj => obj.name === 'playerSpawn');
+        const playerSpawn = map.findObject('PlayerSpawn', obj => obj.name === 'playerSpawn');
         player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
         player.firingSprite = 'player_firing';
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
@@ -55,7 +61,8 @@ class Play extends Phaser.Scene {
         this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels);
 
         player.body.setCollideWorldBounds(true);
-        this.physics.add.collider(player, treeLayer);
+        this.physics.add.collider(player, objectLayer);
+        this.physics.add.collider(player, borderLayer);
 
         this.enemySpawnTimer = 200;
         this.enemySpawnRate = 300;

@@ -43,8 +43,8 @@ class e1Gun extends Phaser.GameObjects.Sprite {
 
     aimTowardsPlayer() {
         // Calculate angle between player sprite and cursor position
-        var angle = Phaser.Math.Angle.Between(this.x, this.y, this.e1Sprite.player.x, this.e1Sprite.player.y);
-        if (angle > Math.PI / 2 || angle < -Math.PI / 2){
+        var angle = Phaser.Math.Angle.Between(this.e1Sprite.x, this.e1Sprite.y, this.e1Sprite.player.x, this.e1Sprite.player.y);
+        if (angle > Math.PI / 2 + 0.01 || angle < -Math.PI / 2 - 0.01){
             this.flipY = true;
             this.e1Sprite.flipX = true;
         } else {

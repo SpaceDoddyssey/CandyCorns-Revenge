@@ -5,10 +5,15 @@ class Player extends Phaser.GameObjects.Sprite {
         // Player Object
         scene.add.existing(this);
         scene.physics.add.existing(this);
+        this.scene = scene;
         this.scale = 0.1;  
         this.idleSprite = texture;
-        this.iframes = 100;
+        this.iframes = 0;
+        this.takeDamage(0, 100);//This is so there is flashing when you spawn and not JUST iframes
         //this.scene.time.addEvent({delay: 2000, callback: this.iframes = false, callbackScope: this, loop: true });
+
+        this.heroColor = new Phaser.Display.Color(255, 255, 255);
+        this.invincibleColor = new Phaser.Display.Color(255, 4, 9);
 
         // Gun Vars
         this.firingSprite;
@@ -16,7 +21,6 @@ class Player extends Phaser.GameObjects.Sprite {
         this.gun;
 
         // Movement
-
         //Adjust decelerate to change how fast the player declerates from the recoil
         //  - decelerate should be within the range 0 < decelerate < 1
         //  - the smaller decelerate is, the faster the player will slow down, and vice versa.
@@ -37,6 +41,26 @@ class Player extends Phaser.GameObjects.Sprite {
             else playerHp = 0;
 
             this.iframes = iframesGiven;
+
+            this.scene.tweens.addCounter({
+                from: 0,
+                to: 20,
+                duration: iframesGiven,
+                yoyo: true,
+                repeat: 5,
+                onUpdate: (tween) => {
+                    var value = Math.floor(tween.getValue());
+                    var newColorObject = Phaser.Display.Color.Interpolate.ColorWithColor(
+                        { r: this.heroColor.r,       g: this.heroColor.g,       b: this.heroColor.b },
+                        { r: this.invincibleColor.r, g: this.invincibleColor.g, b: this.invincibleColor.b },
+                        100,
+                        value
+                    );
+                    var color = Phaser.Display.Color.GetColor(newColorObject.r, newColorObject.g, newColorObject.b);
+                    this.setTint(color);
+                    console.log("in onupdate, this = ", this);
+                }
+            });
         }
     }
 
@@ -83,10 +107,14 @@ class Player extends Phaser.GameObjects.Sprite {
 
         if (game.input.activePointer.isDown){
             //console.log("firing")
+            if(this.isFiring){
+                this.setTexture(this.firingSprite);
+            }
             this.isFiring = true;
         } else {
             this.isFiring = false;
         }
+
         if(this.isFiring){
             this.setTexture(this.firingSprite); 
             if(this.gun.fireCooldown == 0){

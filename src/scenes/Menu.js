@@ -26,7 +26,7 @@ class Menu extends Phaser.Scene {
         }
 
         // show menu text
-        let titleText    = this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4 - borderPadding, 'Candy Corn\'s Revenge ', menuConfig).setOrigin(0.5);
+        let titleText    = this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4 - borderPadding, ' Candy Corn\'s Revenge ', menuConfig).setOrigin(0.5);
         let storyText    = this.add.text(game.config.width/2, game.config.height/2                   , ' Candy Corn is tired of being called not a real candy \nNow he takes his vengeance ', menuConfig).setOrigin(0.5);
         let tutorialText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 4, 'WASD to move, click to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#00FF00';

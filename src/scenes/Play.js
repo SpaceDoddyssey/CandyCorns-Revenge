@@ -41,10 +41,6 @@ class Play extends Phaser.Scene {
         const groundLayer = map.createLayer('Ground', tileset, 0, 0);
         const borderLayer = map.createLayer('Border', tileset, 0, 0);
         const objectLayer = map.createLayer('Objects', tileset, 0, 0);
-        let brokenShotgunLayer = map.createLayer('BrokenShotgun', tileset, 0, 0);
-        const spikeLayer = map.createLayer('Spikes', tileset, 0, 0);
-        const forwardSpeedTileLayer = map.createLayer('ForwardSpeedTiles', tileset, 0, 0);
-        const rightSpeedTileLayer = map.createLayer('RightSpeedTiles', tileset, 0, 0);
 
         objectLayer.setCollisionByProperty({playerCollidable: true});
         borderLayer.setCollisionByProperty({playerCollidable: true});
@@ -69,6 +65,8 @@ class Play extends Phaser.Scene {
         this.enemiesPerSpawn = 3;
 
         this.initCanvasAndUI();
+
+        this.frameTime = 0;
     }
 
     spawnEnemy() {
@@ -95,7 +93,17 @@ class Play extends Phaser.Scene {
         enemies.push(enemy);
     }
 
-    update() {
+    update(time, delta) {
+        //This code limits the update rate to 60/s
+        this.frameTime += delta;
+        if(this.frameTime < 16.5){
+            return;
+        }
+        this.frameTime = 0;
+
+        //This code is for bebugging purposes; It artificially chokes the fps by doing a buttload of unnecessary math each update
+        //for(let i = 0; i < 50000000; i++){ let j = 0; j++; j *= 13; j /= 12; }
+
         this.uiUpdate();
         if (this.gameOver) {
             this.scene.start("gameOverScene");

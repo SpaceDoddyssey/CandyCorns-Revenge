@@ -9,6 +9,7 @@ let config = {
         default: 'arcade',
         arcade: {
             debug: false,
+            fps: 60
         }
     },
     scene: [ Menu, Play, GameOver ]

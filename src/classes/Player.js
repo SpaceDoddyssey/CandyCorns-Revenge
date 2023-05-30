@@ -73,13 +73,6 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.takeDamage(bullet.damage, 100);
             }, null, this);
         });
-
-        // enemies.forEach(enemy => {
-        //     this.scene.physics.overlap(this, enemy, (collided) => {
-        //         collided.destroy();
-        //         this.takeDamage(2);
-        //     }, null, this);
-        // });
     }
 
     // Player Updates

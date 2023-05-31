@@ -21,7 +21,6 @@ class Enemy extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        
         playerBullets.forEach(bullet => {
             this.scene.physics.overlap(this, bullet, (enemy, collidedBullet) => {
                 collidedBullet.destroy();

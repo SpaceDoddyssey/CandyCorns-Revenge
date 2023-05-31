@@ -13,7 +13,9 @@ class Play extends Phaser.Scene {
         this.load.image('enemybullet',  'ph_enemy_bullet.png');
         this.load.image('chocobar',     'e1_chocobar.png');
         this.load.image('e1_gun',    'e1_gun.png');
-        this.load.atlas('lollipop', 'e2Lollipop.png', 'e2Lollipop.json');
+        this.load.image('lollipop1', 'e2Lollipop1.png');
+        this.load.image('lollipop2', 'e2Lollipop2.png');        
+
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset.json');
     }
@@ -79,7 +81,7 @@ class Play extends Phaser.Scene {
           spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
         
-        var randomEnemy = Phaser.Math.RND.between(1, 4);
+        var randomEnemy = Phaser.Math.RND.between(1, 3);
         var enemy;
 
         if (randomEnemy == 1) {

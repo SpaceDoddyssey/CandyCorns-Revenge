@@ -64,6 +64,10 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
+    upgrade(num){
+        console.log("Picked upgrade ", num);
+    }
+
     fire() {
         // Fires the Player's gun
 

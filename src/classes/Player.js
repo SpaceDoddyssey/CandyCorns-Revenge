@@ -58,7 +58,7 @@ class Player extends Phaser.GameObjects.Sprite {
                     );
                     var color = Phaser.Display.Color.GetColor(newColorObject.r, newColorObject.g, newColorObject.b);
                     this.setTint(color);
-                    console.log("in onupdate, this = ", this);
+                    //console.log("in onupdate, this = ", this);
                 }
             });
         }

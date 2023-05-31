@@ -12,7 +12,7 @@ let config = {
             fps: 60
         }
     },
-    scene: [ Menu, Play, GameOver ]
+    scene: [ Menu, Play, GameOver, Pause ]
 }
 
 let game = new Phaser.Game(config);
@@ -42,6 +42,6 @@ let enemies = [];
 
 let manualMoveSpeed = 30;
 
-let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR;
+let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR, keyPause;
 
 let map = null;

@@ -34,6 +34,7 @@ class Play extends Phaser.Scene {
         keyDOWN  = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
         keyESC   = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        keyPause = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P);
 
         //Set up tilemap
         map = this.add.tilemap('tilemapJSON');
@@ -137,6 +138,12 @@ class Play extends Phaser.Scene {
                 this.spawnEnemy();
             }
             this.enemySpawnTimer = this.enemySpawnRate;
+        }
+
+        if (Phaser.Input.Keyboard.JustDown(keyPause)) {
+            // .pause will stop the update step but still render the scene
+            // .launch will launch the target scene and run it in parallel with the invoking scene
+            this.scene.pause().launch('pauseScene')
         }
     }
 

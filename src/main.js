@@ -12,7 +12,7 @@ let config = {
             fps: 60
         }
     },
-    scene: [ Menu, Play, GameOver, Pause ]
+    scene: [ Menu, Play, GameOver, Pause, Upgrades ]
 }
 
 let game = new Phaser.Game(config);

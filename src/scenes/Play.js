@@ -67,6 +67,9 @@ class Play extends Phaser.Scene {
         this.enemySpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
+        this.upgradesRate = 3000;
+        this.upgradesTimer = this.upgradesRate;
+
         this.initCanvasAndUI();
 
         this.frameTime = 0;
@@ -146,6 +149,12 @@ class Play extends Phaser.Scene {
             // .pause will stop the update step but still render the scene
             // .launch will launch the target scene and run it in parallel with the invoking scene
             this.scene.pause().launch('pauseScene')
+        }
+
+        this.upgradesTimer--;   
+        if(this.upgradesTimer < 0){
+            this.upgradesTimer = this.upgradesRate;
+            this.scene.pause().launch('upgradesScene')
         }
     }
 

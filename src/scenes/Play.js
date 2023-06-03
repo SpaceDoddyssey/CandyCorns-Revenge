@@ -47,16 +47,7 @@ class Play extends Phaser.Scene {
         const borderLayer = map.createLayer('Border', tileset, 0, 0);
         const objectLayer = map.createLayer('Objects', tileset, 0, 0);
 
-        this.spikes = this.physics.add.group({
-            allowGravity: false,
-            immovable: true
-        });
-
-        map.getObjectLayer('Spikes').objects.forEach((spike) => {
-            // Add new spikes to our sprite group
-            const spikeSprite = this.spikes.create(spike.x, spike.y - spike.height, 'spike').setOrigin(0);
-            spikeSprite.setScale(0.2);
-        });
+        let spikesLayer = map.getObjectLayer('Spikes');
 
         objectLayer.setCollisionByProperty({playerCollidable: true});
         borderLayer.setCollisionByProperty({playerCollidable: true});
@@ -64,11 +55,27 @@ class Play extends Phaser.Scene {
         // spawn player
         const playerSpawn = map.findObject('PlayerSpawn', obj => obj.name === 'playerSpawn');
         player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
-        player.firingSprite = 'player_firing';
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
         player.gun.playerSprite = player;
+        player.body.onOverlap = true;
+        player.setDepth(1);
 
-        this.physics.add.collider(player, this.spikes, this.spikesHitPlayer, null, this);
+        if(spikesLayer && spikesLayer.objects){
+			spikesLayer.objects.forEach(
+				(object) => {
+                    let spike = this.physics.add.sprite(object.x + object.width/2, object.y - object.height/2, 'spike');
+                    //set immovable
+                    spike.body.immovable = true;
+                    spike.setScale(0.2);
+                    spike.setDepth(0);
+                    this.physics.add.overlap(player, spike);
+				}
+			);
+		}
+        this.physics.world.on('overlap', (gameObject1, body1) =>
+        {
+            this.spikesHitPlayer(gameObject1, body1);
+        });
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(player, true, 0.25, 0.25);

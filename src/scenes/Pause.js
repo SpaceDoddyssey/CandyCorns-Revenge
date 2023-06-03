@@ -12,9 +12,13 @@ class Pause extends Phaser.Scene {
 
         // input
         this.pauseKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
     }
 
     update() {
+        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+            this.scale.toggleFullscreen();
+        }
         if (Phaser.Input.Keyboard.JustDown(this.pauseKey)) {
             // same as above
             this.scene.resume('playScene').stop()

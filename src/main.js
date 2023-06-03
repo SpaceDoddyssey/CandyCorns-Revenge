@@ -1,9 +1,10 @@
 let config = {
     type: Phaser.WEBGL,
     width: 960,
-    height: 560,
+    height: 540,
     scale: {
-        autoCenter: Phaser.Scale.CENTER_BOTH
+        mode: Phaser.Scale.FIT, 
+        autoCenter: Phaser.Scale.RESIZE
     },
     physics: {
         default: 'arcade',
@@ -42,6 +43,6 @@ let enemies = [];
 
 let manualMoveSpeed = 30;
 
-let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR, keyPause;
+let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR, keyPause, keyFullscreen;
 
 let map = null;

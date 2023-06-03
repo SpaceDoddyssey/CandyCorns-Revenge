@@ -29,9 +29,13 @@ class Upgrades extends Phaser.Scene {
         let upgrade3 = new Button(centerX, centerY + 100, 'upgrade 3', this, () => {
             this.scene.resume('playScene').stop()
         })
+
+        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
     }
 
     update() {
-
+        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+            this.scale.toggleFullscreen();
+        }
     }
 }

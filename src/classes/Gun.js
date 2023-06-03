@@ -8,6 +8,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.recoil = -50000; 
         this.fireRate = 20;
         this.fireCooldown = 0;  
+        this.depth = 2;
 
         this.distanceFromPlayer = 36; 
         this.playerSprite; //Set by Play

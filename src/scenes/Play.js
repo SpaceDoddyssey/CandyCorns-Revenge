@@ -58,7 +58,6 @@ class Play extends Phaser.Scene {
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
         player.gun.playerSprite = player;
         player.body.onOverlap = true;
-        player.setDepth(1);
 
         if(spikesLayer && spikesLayer.objects){
 			spikesLayer.objects.forEach(

@@ -7,6 +7,7 @@ class Play extends Phaser.Scene {
         this.load.path = 'assets/';
         this.load.image('player_idle',  'Candy_Corn_Idle.png');
         this.load.image('player_firing','Candy_Corn_Firing.png');
+        this.load.image('player_hurt',  'Candy_Corn_Hurt.png');
         this.load.image('background',   'ph_background.png');
         this.load.image('gun',          'player_gun.png');
         this.load.image('playerbullet', 'player_bullet.png');
@@ -14,8 +15,8 @@ class Play extends Phaser.Scene {
         this.load.image('chocobar',     'e1_chocobar.png');
         this.load.image('e1_gun',    'e1_gun.png');
         this.load.image('lollipop1', 'e2Lollipop1.png');
-        this.load.image('lollipop2', 'e2Lollipop2.png');        
-
+        this.load.image('lollipop2', 'e2Lollipop2.png');  
+        this.load.image('spike', 'spike.png');      
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset.json');
     }
@@ -46,6 +47,17 @@ class Play extends Phaser.Scene {
         const borderLayer = map.createLayer('Border', tileset, 0, 0);
         const objectLayer = map.createLayer('Objects', tileset, 0, 0);
 
+        this.spikes = this.physics.add.group({
+            allowGravity: false,
+            immovable: true
+        });
+
+        map.getObjectLayer('Spikes').objects.forEach((spike) => {
+            // Add new spikes to our sprite group
+            const spikeSprite = this.spikes.create(spike.x, spike.y - spike.height, 'spike').setOrigin(0);
+            spikeSprite.setScale(0.2);
+        });
+
         objectLayer.setCollisionByProperty({playerCollidable: true});
         borderLayer.setCollisionByProperty({playerCollidable: true});
 
@@ -55,6 +67,8 @@ class Play extends Phaser.Scene {
         player.firingSprite = 'player_firing';
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
         player.gun.playerSprite = player;
+
+        this.physics.add.collider(player, this.spikes, this.spikesHitPlayer, null, this);
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(player, true, 0.25, 0.25);
@@ -74,6 +88,10 @@ class Play extends Phaser.Scene {
         this.initCanvasAndUI();
 
         this.frameTime = 0;
+    }
+
+    spikesHitPlayer(player, spike) {
+        player.takeDamage(1, 100);
     }
 
     spawnEnemy() {

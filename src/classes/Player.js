@@ -7,7 +7,8 @@ class Player extends Phaser.GameObjects.Sprite {
         scene.physics.add.existing(this);
         this.scene = scene;
         this.scale = 0.1;  
-        this.idleSprite = texture;
+        this.idleSprite = 'player_idle';
+        this.hurtSprite = 'player_hurt';
         this.iframes = 0;
         this.takeDamage(0, 100);//This is so there is flashing when you spawn and not JUST iframes
 
@@ -15,7 +16,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.invincibleColor = new Phaser.Display.Color(255, 4, 9);
 
         // Gun Vars
-        this.firingSprite;
+        this.firingSprite = 'player_firing';
         this.isFiring = false;            
         this.gun;
 
@@ -34,6 +35,7 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.iframes == 0) {
             //damage sprite
             this.scene.sound.play('hit');
+            this.setTexture(this.hurtSprite);
             if (playerHp > 0) {
                 playerHp -= amount;
             }
@@ -85,6 +87,7 @@ class Player extends Phaser.GameObjects.Sprite {
         if (this.iframes > 0) {
             this.iframes--;
         } else {
+            this.setTexture(this.idleSprite);
             //recover
         }
 
@@ -119,11 +122,12 @@ class Player extends Phaser.GameObjects.Sprite {
         }
 
         if(this.isFiring){
-            this.setTexture(this.firingSprite); 
+            if (this.iframes == 0) this.setTexture(this.firingSprite); 
+            else this.setTexture(this.hurtSprite);
             if(this.gun.fireCooldown == 0){
                 this.fire();
             }
-        } else {
+        } else if (this.iframes == 0) {
             this.setTexture(this.idleSprite);
         }
     }

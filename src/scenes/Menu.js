@@ -30,9 +30,9 @@ class Menu extends Phaser.Scene {
         // show menu text
         let titleText    = this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4 - borderPadding, ' Candy Corn\'s Revenge ', menuConfig).setOrigin(0.5);
         let storyText    = this.add.text(game.config.width/2, game.config.height/2                   , ' Candy Corn is tired of being called not a real candy \nNow he takes his vengeance ', menuConfig).setOrigin(0.5);
-        let tutorialText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 4, 'WASD to move, click to fire', menuConfig).setOrigin(0.5);
+        let tutorialText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 3, ' WASD to move, click to fire \n Hold to continue firing \n P to Pause, F to toggle Fullscreen ', menuConfig).setOrigin(0.5, 0);
         menuConfig.backgroundColor = '#00FF00';
-        const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 8, 'PLAY', menuConfig).setOrigin(0.5).setInteractive();
+        const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 12,  'PLAY', menuConfig).setOrigin(0.5).setInteractive();
         //-------------------------------------------
         Ready = false; //CHANGE TO REENABLE THE MENU
         //-------------------------------------------

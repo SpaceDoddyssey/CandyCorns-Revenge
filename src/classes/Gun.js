@@ -35,7 +35,8 @@ class Gun extends Phaser.GameObjects.Sprite {
         var pointer = this.scene.input.activePointer;
 
         // Calculate angle between player sprite and cursor position
-        var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, pointer.x + this.scene.cameras.main.scrollX, pointer.y + this.scene.cameras.main.scrollY);
+        var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, 
+                                                   pointer.worldX, pointer.worldY);
         if (angle > Math.PI / 2 || angle < -Math.PI / 2){
             this.flipY = true;
             this.playerSprite.flipX = true;

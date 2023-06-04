@@ -93,8 +93,9 @@ class Play extends Phaser.Scene {
         this.physics.add.collider(player, objectLayer);
         this.physics.add.collider(player, borderLayer);
 
-        this.enemySpawnTimer = 50;
-        this.enemySpawnRate = 250;
+        this.enemySpawnTimer = 20;
+        this.enemySpawnRate = 450;
+        this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
         this.upgradesRate = 3000;
@@ -106,13 +107,15 @@ class Play extends Phaser.Scene {
     }
 
     spawnEnemy() {
-        var minDistFromPlayer = 150;
+        var minDistFromPlayer = 250;
+        var maxDistFromPlayer = 1350; 
 
         var spawnPoint = new Phaser.Math.Vector2();
         do {
           spawnPoint.x = Phaser.Math.RND.between(0, map.widthInPixels);
           spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
-        } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer);
+        } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer
+              || Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) >= maxDistFromPlayer );
         
         var randomEnemy = Phaser.Math.RND.between(1, 3);
         var enemy;
@@ -175,6 +178,9 @@ class Play extends Phaser.Scene {
                 this.spawnEnemy();
             }
             this.enemySpawnTimer = this.enemySpawnRate;
+            if(this.enemySpawnRate > this.fastestAllowedSpawnRate){
+                this.enemySpawnRate -= 10;
+            }
         }
 
         if (Phaser.Input.Keyboard.JustDown(keyPause)) {

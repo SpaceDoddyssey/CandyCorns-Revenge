@@ -98,6 +98,8 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.decelUpdate();
 
+        this.hurtUpdate();
+
         enemyBullets.forEach(bullet => {
             this.scene.physics.overlap(this, bullet, (enemy, collidedBullet) => {
                 collidedBullet.destroy();
@@ -164,5 +166,25 @@ class Player extends Phaser.GameObjects.Sprite {
         else this.forceY = 0;
 
         this.body.setAcceleration(this.forceX, this.forceY);
+    }
+
+    hurtUpdate() {
+        spikesLayer.objects.forEach(
+            (spike) => {
+                const spikeRect = new Phaser.Geom.Rectangle(spike.x, spike.y, spike.width, spike.height);
+                if (Phaser.Geom.Intersects.RectangleToRectangle(this.getBounds(), spikeRect)) {
+                    this.takeDamage(1, 100);
+                }
+            }
+        )
+        
+        speedLayer.objects.forEach(
+            (speedTile) => {
+                const speedTileRect = new Phaser.Geom.Rectangle(speedTile.x, speedTile.y, speedTile.width, speedTile.height);
+                if (Phaser.Geom.Intersects.RectangleToRectangle(this.getBounds(), speedTileRect)) {
+                    this.y -= 100;
+                }
+            }
+        )
     }
 }

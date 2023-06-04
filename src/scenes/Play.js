@@ -17,6 +17,7 @@ class Play extends Phaser.Scene {
         this.load.image('lollipop1', 'e2Lollipop1.png');
         this.load.image('lollipop2', 'e2Lollipop2.png');  
         this.load.image('spike', 'spike.png');      
+        this.load.image('speedTile', 'speedTile.png');
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset.json');
     }
@@ -47,7 +48,8 @@ class Play extends Phaser.Scene {
         const borderLayer = map.createLayer('Border', tileset, 0, 0);
         const objectLayer = map.createLayer('Objects', tileset, 0, 0);
 
-        let spikesLayer = map.getObjectLayer('Spikes');
+        spikesLayer = map.getObjectLayer('Spikes');
+        speedLayer = map.getObjectLayer('SpeedTiles');
 
         objectLayer.setCollisionByProperty({playerCollidable: true});
         borderLayer.setCollisionByProperty({playerCollidable: true});
@@ -57,7 +59,6 @@ class Play extends Phaser.Scene {
         player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
         player.gun.playerSprite = player;
-        player.body.onOverlap = true;
 
         if(spikesLayer && spikesLayer.objects){
 			spikesLayer.objects.forEach(
@@ -67,14 +68,20 @@ class Play extends Phaser.Scene {
                     spike.body.immovable = true;
                     spike.setScale(0.2);
                     spike.setDepth(0);
-                    this.physics.add.overlap(player, spike);
 				}
 			);
 		}
-        this.physics.world.on('overlap', (gameObject1, body1) =>
-        {
-            this.spikesHitPlayer(gameObject1, body1);
-        });
+
+        if (speedLayer && speedLayer.objects){  
+            speedLayer.objects.forEach(
+                (object) => {
+                    let speedTile = this.physics.add.sprite(object.x + object.width/2, object.y - object.height/2, 'speedTile');
+                    speedTile.body.immovable = true;
+                    speedTile.setScale(0.4);
+                    speedTile.setDepth(0);
+                }
+            );
+        }
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
         this.cameras.main.startFollow(player, true, 0.25, 0.25);
@@ -94,10 +101,6 @@ class Play extends Phaser.Scene {
         this.initCanvasAndUI();
 
         this.frameTime = 0;
-    }
-
-    spikesHitPlayer(player, spike) {
-        player.takeDamage(1, 100);
     }
 
     spawnEnemy() {
@@ -125,6 +128,8 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
+
+
         //This code limits the update rate to 60/s
         this.frameTime += delta;
         if(this.frameTime < 16.5){

@@ -68,6 +68,7 @@ class Play extends Phaser.Scene {
                     spike.body.immovable = true;
                     spike.setScale(0.2);
                     spike.setDepth(0);
+                    this.physics.add.overlap(player, spike);
 				}
 			);
 		}
@@ -79,6 +80,7 @@ class Play extends Phaser.Scene {
                     speedTile.body.immovable = true;
                     speedTile.setScale(0.4);
                     speedTile.setDepth(0);
+                    this.physics.add.overlap(player, speedTile);
                 }
             );
         }

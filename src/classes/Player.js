@@ -144,6 +144,7 @@ class Player extends Phaser.GameObjects.Sprite {
             }
             this.isFiring = true;
         } else {
+            if (this.gun.type == "minigun") this.gun.fireRate = 35;
             this.isFiring = false;
         }
 
@@ -152,6 +153,11 @@ class Player extends Phaser.GameObjects.Sprite {
             else this.setTexture(this.hurtSprite);
             if(this.gun.fireCooldown == 0){
                 this.fire();
+                if (this.gun.type == "minigun") {
+                    console.log("minigun firing");
+                    if (this.gun.fireRate > this.gun.fireRateCap) this.gun.fireRate -= 5;
+                    else this.gun.fireRate = this.gun.fireRateCap;
+                }
             }
         } else if (this.iframes == 0) {
             this.setTexture(this.idleSprite);

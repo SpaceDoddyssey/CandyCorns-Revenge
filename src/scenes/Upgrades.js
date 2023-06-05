@@ -75,24 +75,27 @@ class Upgrades extends Phaser.Scene {
         else if (num == 3) {
             this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'firerateup').setScale(2).setOrigin(0.5).setScale(0.2);
             let upgrade3 = new Button(centerX, centerY + this.verticalSpacing, 'Fire Rate Up', this, () => {
-                if (player.gun.texture == 'gun' && player.gun.fireRate > 10) {
+                let upgradeValue = 0;
+                if (player.gun.type == "gun" && player.gun.fireRate > 10) {
                     player.gun.fireRate -= 2;
+                    upgradeValue = 2;
                     success = true;
                 }
-                else if (player.gun.texture == 'minigun' && player.gun.fireRate > 2) {
-                    player.gun.fireRate -= 2;
+                else if (player.gun.type == "minigun" && player.gun.fireRateCap > 4) {
+                    player.gun.fireRateCap -= 1;
+                    upgradeValue = 1;
                     success = true;
                 }
                 else success = false;
                 this.scene.resume('playScene').stop()
-                player.upgrade(2, "fire rate", success);
+                player.upgrade(upgradeValue, "fire rate", success);
             })
         }
         else if (num == 4) {
             this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'minigun').setScale(2).setOrigin(0.5).setScale(0.2);
             let upgrade4 = new Button(centerX, centerY + this.verticalSpacing, 'Minigun', this, () => {
-                if (player.gun.fireRate > 10) {
-                    player.gun.fireRate = 10;
+                if (player.gun.type != "minigun") {
+                    player.gun.fireRateCap = 10;
                     success = true;
                 }
                 else success = false;

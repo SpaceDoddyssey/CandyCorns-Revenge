@@ -8,7 +8,8 @@ class Gun extends Phaser.GameObjects.Sprite {
 
         this.recoil = -50000; 
         this.fireRate = 20;
-        this.fireCooldown = 0;  
+        this.fireCooldown = 0;
+        this.fireRateCap = 20;
         this.depth = 2;
         this.spread = 0;
 
@@ -27,6 +28,7 @@ class Gun extends Phaser.GameObjects.Sprite {
     }
 
     fire() {
+        console.log(this.fireRate);
         this.scene.sound.play('gunfire', { volume: 0.3 });
         let randSpread = Phaser.Math.FloatBetween(-this.spread, this.spread);
         console.log(randSpread);

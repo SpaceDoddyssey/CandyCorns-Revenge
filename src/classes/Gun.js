@@ -3,12 +3,14 @@ class Gun extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
         this.scene = scene;
+        this.type = "gun";
         this.scale = 0.1;
 
         this.recoil = -50000; 
         this.fireRate = 20;
         this.fireCooldown = 0;  
         this.depth = 2;
+        this.spread = 0;
 
         this.distanceFromPlayer = 36; 
         this.playerSprite; //Set by Play
@@ -17,7 +19,6 @@ class Gun extends Phaser.GameObjects.Sprite {
     }
 
     update() {
-        this.texture = 'minigun';
         if(this.fireCooldown > 0){
             this.fireCooldown--;
         }
@@ -27,7 +28,12 @@ class Gun extends Phaser.GameObjects.Sprite {
 
     fire() {
         this.scene.sound.play('gunfire', { volume: 0.3 });
-        let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet', this.rotation).setOrigin(0.5, 0.5);
+        let randSpread = Phaser.Math.FloatBetween(-this.spread, this.spread);
+        console.log(randSpread);
+        let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet', this.rotation * (1 + randSpread)).setOrigin(0.5, 0.5);
+        if (this.type == "minigun") {
+            bullet.setScale(0.2);
+        }
         playerBullets.push(bullet);
         this.fireCooldown = this.fireRate;
     }

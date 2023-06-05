@@ -98,6 +98,9 @@ class Upgrades extends Phaser.Scene {
                 else success = false;
                 player.gun.setTexture('minigun');
                 player.gun.setScale(0.2);
+                player.gun.recoil = -35000;
+                player.gun.type = "minigun";
+                player.gun.spread = 0.04;
                 this.scene.resume('playScene').stop()
                 player.upgrade(1, "minigun", success);
             })

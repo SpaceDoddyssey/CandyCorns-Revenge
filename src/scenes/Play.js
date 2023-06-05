@@ -10,15 +10,16 @@ class Play extends Phaser.Scene {
         this.load.image('player_hurt',  'Candy_Corn_Hurt.png');
         this.load.image('background',   'ph_background.png');
         this.load.image('gun',          'player_gun.png');
+        this.load.image('minigun',       'minigun.png');
         this.load.image('playerbullet', 'player_bullet.png');
         this.load.image('enemybullet',  'ph_enemy_bullet.png');
         this.load.image('chocobar',     'e1_chocobar.png');
-        this.load.image('e1_gun',    'e1_gun.png');
-        this.load.image('lollipop1', 'e2Lollipop1.png');
-        this.load.image('lollipop2', 'e2Lollipop2.png');
-        this.load.image('jawbreaker', 'e3Jawbreaker.png');  
-        this.load.image('spike', 'spike.png');      
-        this.load.image('speedTile', 'speedTile.png');
+        this.load.image('e1_gun',       'e1_gun.png');
+        this.load.image('lollipop1',    'e2Lollipop1.png');
+        this.load.image('lollipop2',    'e2Lollipop2.png');
+        this.load.image('jawbreaker',   'e3Jawbreaker.png');  
+        this.load.image('spike',        'spike.png');      
+        this.load.image('speedTile',    'speedTile.png');
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
         this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset.json');
     }

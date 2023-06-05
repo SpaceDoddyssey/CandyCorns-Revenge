@@ -17,6 +17,7 @@ class Gun extends Phaser.GameObjects.Sprite {
     }
 
     update() {
+        this.texture = 'minigun';
         if(this.fireCooldown > 0){
             this.fireCooldown--;
         }

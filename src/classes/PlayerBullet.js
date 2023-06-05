@@ -9,8 +9,8 @@ class PlayerBullet extends Phaser.GameObjects.Sprite {
         const circleRadius = Math.max(this.width, this.height) / 2;
         this.body.setCircle(circleRadius);
         
-        this.damage = 1;
-        this.speed = 7 ;
+        this.damage = playerBulletDamage;
+        this.speed = playerBulletSpeed;
         this.rotation = rotation;
     }
 

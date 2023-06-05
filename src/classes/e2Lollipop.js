@@ -5,18 +5,6 @@ class e2Lollipop extends Enemy {
         //this.jumpSpeed = 50;
         this.scale = 0.2;
         this.hp = 3;
-        // this.anims.create({
-        //     key: 'lollipop',
-        //     frames: this.anims.generateFrameNames('lollipop', {
-        //         prefix: 'lollipop',
-        //         start: 1,
-        //         end: 2,
-        //     }),
-        //     defaultTextureKey: 'lollipop',
-        //     frameRate: 2,
-        //     repeat: -1
-        // });
-        // this.anims.play('lollipop', true);
 
         this.jumpState = false;
         this.jumpTimer = 100;
@@ -27,7 +15,7 @@ class e2Lollipop extends Enemy {
         this.velocity = new Phaser.Math.Vector2();
     }
 
-    jump() {console.log("hello");
+    jump() {
         let playerX = this.player.x + this.scene.cameras.main.scrollX;
         let playerY = this.player.y + this.scene.cameras.main.scrollY;
         let thisX = this.x + this.scene.cameras.main.scrollX;

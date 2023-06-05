@@ -34,6 +34,9 @@ let player;
 let startingHp = 10;
 let playerHp = startingHp;
 let playerBullets = [];
+let playerBulletDamage = 1;
+let playerBulletSpeed = 7;
+
 let highScore = 0;
 let newHighScore = false;
 let score = 0;

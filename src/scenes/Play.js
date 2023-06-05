@@ -15,7 +15,8 @@ class Play extends Phaser.Scene {
         this.load.image('chocobar',     'e1_chocobar.png');
         this.load.image('e1_gun',    'e1_gun.png');
         this.load.image('lollipop1', 'e2Lollipop1.png');
-        this.load.image('lollipop2', 'e2Lollipop2.png');  
+        this.load.image('lollipop2', 'e2Lollipop2.png');
+        this.load.image('jawbreaker', 'e3Jawbreaker.png');  
         this.load.image('spike', 'spike.png');      
         this.load.image('speedTile', 'speedTile.png');
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
@@ -44,9 +45,9 @@ class Play extends Phaser.Scene {
         //Set up tilemap
         map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('CandyCornRevenge_Tileset', 'tilesetImage');
-        const groundLayer = map.createLayer('Ground', tileset, 0, 0);
-        const borderLayer = map.createLayer('Border', tileset, 0, 0);
-        const objectLayer = map.createLayer('Objects', tileset, 0, 0);
+        const groundLayer = map.createLayer('Ground', tileset, 0, 0).setDepth(-1);
+        const borderLayer = map.createLayer('Border', tileset, 0, 0).setDepth(-1);
+        const objectLayer = map.createLayer('Objects', tileset, 0, 0).setDepth(-1);
 
         spikesLayer = map.getObjectLayer('Spikes');
         speedLayer = map.getObjectLayer('SpeedTiles');
@@ -98,7 +99,7 @@ class Play extends Phaser.Scene {
         this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
-        this.upgradesRate = 3000;
+        this.upgradesRate = 100//3000;
         this.upgradesTimer = this.upgradesRate;
 
         this.initCanvasAndUI();
@@ -117,11 +118,13 @@ class Play extends Phaser.Scene {
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer
               || Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) >= maxDistFromPlayer );
         
-        var randomEnemy = Phaser.Math.RND.between(1, 3);
+        var randomEnemy = Phaser.Math.RND.between(1, 4);
         var enemy;
 
         if (randomEnemy == 1) {
             enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        } else if (randomEnemy == 2) {
+            enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
         } else {
             enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
             enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');

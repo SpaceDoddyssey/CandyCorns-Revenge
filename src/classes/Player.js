@@ -66,8 +66,31 @@ class Player extends Phaser.GameObjects.Sprite {
         }
     }
 
-    upgrade(num){
-        console.log("Picked upgrade ", num);
+    upgrade(value, type, success){
+        let popUpConfig = {
+            fontFamily: 'Courier',
+            fontSize: '18px',
+            color: '#000',
+            align: 'center'
+        }
+
+        console.log("Picked upgrade ", type);
+        console.log("Scene = ", this.scene);
+        
+        let Upgraded;
+        if (success) Upgraded = this.scene.add.text(player.x + player.width*this.scale, player.y - player.height*this.scale + 5, '+' + value + " " + type, popUpConfig).setOrigin(0, 0.5).setDepth(3);
+        else Upgraded = this.scene.add.text(player.x + player.width*this.scale, player.y - player.height*this.scale + 5, 'Maxed Out!', popUpConfig).setOrigin(0, 0.5).setDepth(3);
+        this.scene.tweens.add({
+            targets: Upgraded,
+            alpha: 0,
+            duration: 2000,
+            ease: 'Linear',
+            repeat: 0,
+            yoyo: false,
+            onComplete: () => {
+                Upgraded.destroy();
+            }
+        });
     }
 
     fire() {

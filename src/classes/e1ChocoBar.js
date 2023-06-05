@@ -6,14 +6,25 @@ class e1ChocoBar extends Enemy {
         this.hp = 2;
         this.gun;
         this.hasGun = true;
-        this.movespeed = 0.5;
+        this.moveSpeed = 30;
+    }
+
+    followPlayer() {
+        let playerX = this.player.x + this.scene.cameras.main.scrollX;
+        let playerY = this.player.y + this.scene.cameras.main.scrollY;
+        let thisX = this.x + this.scene.cameras.main.scrollX;
+        let thisY = this.y + this.scene.cameras.main.scrollY;
+
+        var angle = Phaser.Math.Angle.Between(thisX, thisY, playerX, playerY);
+
+        this.forceX = Math.cos(angle) * this.moveSpeed;
+        this.forceY = Math.sin(angle) * this.moveSpeed;
+
+        this.body.setVelocity(this.forceX, this.forceY);
     }
 
     update() {
-        if      (this.x < this.player.x - 1) this.x += this.movespeed;
-        else if (this.x > this.player.x + 1) this.x -= this.movespeed;
-        if      (this.y < this.player.y - 1) this.y += this.movespeed;
-        else if (this.y > this.player.y + 1) this.y -= this.movespeed;
+        this.followPlayer();
 
         super.update();
         this.gun.update();

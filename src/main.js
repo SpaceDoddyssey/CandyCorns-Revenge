@@ -51,3 +51,5 @@ let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR, keyPause, keyFullscreen;
 let map = null;
 let spikesLayer = null;
 let speedLayer = null;
+let objectLayer = null;
+let borderLayer = null;

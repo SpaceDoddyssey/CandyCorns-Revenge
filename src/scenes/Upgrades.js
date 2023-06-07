@@ -5,8 +5,9 @@ class Upgrades extends Phaser.Scene {
 
     preload() {
         this.load.path = './assets/';
-        this.load.image('damageup', 'damageup.png');
-        this.load.image('firerateup', 'firerateup.png');
+        this.load.image('damageup', 'uDamageUp.png');
+        this.load.image('firerateup', 'uFireRateUp.png');
+        this.load.image('bulletspeedup', 'uBulletSpeedUp.png');
     }
 
     create() {
@@ -62,6 +63,7 @@ class Upgrades extends Phaser.Scene {
             })
         }
         else if (num == 2) {
+            this.add.sprite(centerX - 130, centerY + this.verticalSpacing, 'bulletspeedup').setScale(2).setOrigin(0.5).setScale(0.2);
             let upgrade2 = new Button(centerX, centerY + this.verticalSpacing, 'Bullet Speed Up', this, () => {
                 if (playerBulletSpeed < 17) {
                     playerBulletSpeed += 2;

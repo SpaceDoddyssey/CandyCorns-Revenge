@@ -18,6 +18,10 @@ class Play extends Phaser.Scene {
         this.load.image('lollipop1',    'e2Lollipop1.png');
         this.load.image('lollipop2',    'e2Lollipop2.png');
         this.load.image('jawbreaker',   'e3Jawbreaker.png');  
+        this.load.image('marshmallow',  'e4Marshmallow.png');
+        this.load.image('gummybear1',    'e5GummyBear1.png');
+        this.load.image('gummybear2',   'e5GummyBear2.png');
+        this.load.image('gummybear3',   'e5GummyBear3.png');
         this.load.image('spike',        'spike.png');      
         this.load.image('speedTile',    'speedTile.png');
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
@@ -47,8 +51,8 @@ class Play extends Phaser.Scene {
         map = this.add.tilemap('tilemapJSON');
         const tileset = map.addTilesetImage('CandyCornRevenge_Tileset', 'tilesetImage');
         const groundLayer = map.createLayer('Ground', tileset, 0, 0).setDepth(-1);
-        const borderLayer = map.createLayer('Border', tileset, 0, 0).setDepth(-1);
-        const objectLayer = map.createLayer('Objects', tileset, 0, 0).setDepth(-1);
+        borderLayer = map.createLayer('Border', tileset, 0, 0).setDepth(-1);
+        objectLayer = map.createLayer('Objects', tileset, 0, 0).setDepth(-1);
 
         spikesLayer = map.getObjectLayer('Spikes');
         speedLayer = map.getObjectLayer('SpeedTiles');
@@ -114,23 +118,33 @@ class Play extends Phaser.Scene {
 
         var spawnPoint = new Phaser.Math.Vector2();
         do {
-          spawnPoint.x = Phaser.Math.RND.between(0, map.widthInPixels);
-          spawnPoint.y = Phaser.Math.RND.between(0, map.heightInPixels);
+          spawnPoint.x = Phaser.Math.RND.between(50, map.widthInPixels - 50);
+          spawnPoint.y = Phaser.Math.RND.between(50, map.heightInPixels - 50);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer
               || Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) >= maxDistFromPlayer );
         
-        var randomEnemy = Phaser.Math.RND.between(1, 4);
+        var randomEnemy = Phaser.Math.RND.between(1, 7);
         var enemy;
 
         if (randomEnemy == 1) {
-            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
-        } else if (randomEnemy == 2) {
-            enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
-        } else {
             enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
             enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
             enemy.gun.e1Sprite = enemy;
+        } else if (randomEnemy == 2) {
+            enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
+        } else if (randomEnemy == 3) {
+            enemy = new e4Marshmallow(this, spawnPoint.x, spawnPoint.y, 'marshmallow').setOrigin(0.5, 0.5);
+            this.physics.add.collider(player, enemy);
+        } else if (randomEnemy == 4) {
+            enemy = new e5GummyBear(this, spawnPoint.x, spawnPoint.y, 'gummybear1').setOrigin(0.5, 0.5);
+            enemy.setTint(Phaser.Math.RND.between(0, 0xffffff));
         }
+        else {
+            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        }
+
+        this.physics.add.collider(enemy, objectLayer);
+        this.physics.add.collider(enemy, borderLayer);
 
         enemy.player = player;
         enemies.push(enemy);

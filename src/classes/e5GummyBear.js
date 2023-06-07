@@ -3,11 +3,13 @@ class e5GummyBear extends Enemy {
         super(scene, x, y, texture, frame);
 
         this.scale = 0.3;
-        this.hp = 2;
+        this.hp = 4;
         this.moveSpeed = 10;
         this.firingAngle = 0;
         this.recoil = -100000;
         this.decelerate = 0.8;
+
+        this.damage = 3;
 
         this.fireRate = 1000;
         this.fireCooldown = 500;
@@ -77,6 +79,7 @@ class e5GummyBear extends Enemy {
 
         let bullet = new EnemyBullet(this.scene, this.x + this.offsetX, this.y, 'enemybullet').setOrigin(0.5, 0.5).setScale(0.6);
         bullet.speed = 3;
+        bullet.damage = this.damage;
         bullet.rotation = this.firingAngle;
         enemyBullets.push(bullet);
         this.fireCooldown = this.fireRate;

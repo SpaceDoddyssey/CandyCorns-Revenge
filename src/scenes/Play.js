@@ -141,6 +141,10 @@ class Play extends Phaser.Scene {
             enemy.damage += 2;
         } else if (gameDifficulty == 5) {
             enemy = this.difficultyFive(spawnPoint);
+        } else if (gameDifficulty == 6) {
+            enemy = this.difficultySix(spawnPoint);
+            enemy.hp += 5;
+            enemy.damage += 3;
         }
 
         this.physics.add.collider(enemy, objectLayer);
@@ -204,6 +208,28 @@ class Play extends Phaser.Scene {
     difficultyFive(spawnPoint) {
         var enemy;
         enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
+        return enemy;
+    }
+
+    difficultySix(spawnPoint) {
+        var randomEnemy = Phaser.Math.RND.between(1, 20);
+        var enemy;
+        if (randomEnemy == 1 || randomEnemy == 2 || randomEnemy == 3 || randomEnemy == 4) {
+            enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
+            enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
+            enemy.gun.e1Sprite = enemy;
+        }
+        else if (randomEnemy == 5 || randomEnemy == 6 || randomEnemy == 7) {
+            enemy = new e4Marshmallow(this, spawnPoint.x, spawnPoint.y, 'marshmallow').setOrigin(0.5, 0.5);
+        } else if (randomEnemy == 8 || randomEnemy == 9 || randomEnemy == 10) {
+            enemy = new e5GummyBear(this, spawnPoint.x, spawnPoint.y, 'gummybear1').setOrigin(0.5, 0.5);
+            enemy.setTint(Phaser.Math.RND.between(0, 0xffffff));
+        }
+        else if (randomEnemy == 11 || randomEnemy == 12) {
+            enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
+        }
+        else
+            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
         return enemy;
     }
 
@@ -286,6 +312,7 @@ class Play extends Phaser.Scene {
 
         this.difficultyCounter.x = this.cameras.main.scrollX + (game.config.width - 250)/2;
         this.difficultyCounter.y = this.cameras.main.scrollY;
+        this.difficultyCounter.text = 'Difficulty: ' + gameDifficulty;
     }
 
     addScore(points){

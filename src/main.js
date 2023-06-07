@@ -55,3 +55,4 @@ let objectLayer = null;
 let borderLayer = null;
 
 let gameDifficulty = 1;
+let maxDifficulty = 6;

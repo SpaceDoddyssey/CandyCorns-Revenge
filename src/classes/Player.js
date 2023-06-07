@@ -92,11 +92,11 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         });
 
-        popUpConfig.fontSize = '36px';
+        popUpConfig.fontSize = '24px';
         popUpConfig.color = '#ff0000';
 
         // Place difficulty increase notification at the top of the screen
-        let DiffText = this.scene.add.text(this.scene.cameras.main.scrollX + game.config.width/2.5, this.scene.cameras.main.scrollY + 40, 'Difficulty ' + gameDifficulty, popUpConfig).setOrigin(0, 0.5).setDepth(3);
+        let DiffText = this.scene.add.text(this.scene.cameras.main.scrollX + game.config.width/2.75, this.scene.cameras.main.scrollY + 150, 'Difficulty Increased!', popUpConfig).setOrigin(0, 0.5).setDepth(3);
         this.scene.tweens.add({
             targets: DiffText,
             alpha: 0,

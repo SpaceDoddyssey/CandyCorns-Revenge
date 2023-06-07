@@ -283,6 +283,9 @@ class Play extends Phaser.Scene {
         
         this.hpCounter.x = this.cameras.main.scrollX + game.config.width - 170;
         this.hpCounter.y = this.cameras.main.scrollY;
+
+        this.difficultyCounter.x = this.cameras.main.scrollX + (game.config.width - 250)/2;
+        this.difficultyCounter.y = this.cameras.main.scrollY;
     }
 
     addScore(points){
@@ -316,10 +319,12 @@ class Play extends Phaser.Scene {
         const timeConfig = Object.assign({}, scoreConfig, { fixedWidth: 160 });
         const gameOverConfig = Object.assign({}, scoreConfig, { fontSize: '56px', align: 'center', fixedWidth: 375 });
         const restartConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 380 });
+        const difficultyConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 250 });
 
         // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
 
         this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + score, scoreConfig).setDepth(3);
         this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + score, scoreConfig).setDepth(3);
+        this.difficultyCounter = this.add.text(this.cameras.main.scrollX + 250, this.cameras.main.scrollY, 'Difficulty: ' + gameDifficulty, difficultyConfig).setDepth(3);
     }
 }

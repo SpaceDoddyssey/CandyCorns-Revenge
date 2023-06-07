@@ -105,7 +105,7 @@ class Play extends Phaser.Scene {
         this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
-        this.upgradesRate = 3000;
+        this.upgradesRate = 1000//3000;
         this.upgradesTimer = this.upgradesRate;
 
         this.initCanvasAndUI();
@@ -129,11 +129,16 @@ class Play extends Phaser.Scene {
         if (gameDifficulty == 1) {
             enemy = this.difficultyOne(spawnPoint);
         } else if (gameDifficulty == 2) {
-            enemy =this.difficultyTwo(spawnPoint);
+            enemy = this.difficultyTwo(spawnPoint);
+            enemy.hp += 1;
         } else if (gameDifficulty == 3) {
             enemy = this.difficultyThree(spawnPoint);
+            enemy.hp += 2;
+            enemy.damage += 1;
         } else if (gameDifficulty == 4) {
             enemy = this.difficultyFour(spawnPoint);
+            enemy.hp += 3;
+            enemy.damage += 2;
         } else if (gameDifficulty == 5) {
             enemy = this.difficultyFive(spawnPoint);
         }
@@ -314,7 +319,7 @@ class Play extends Phaser.Scene {
 
         // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
 
-        this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + score, scoreConfig);
-        this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + score, scoreConfig);
+        this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + score, scoreConfig).setDepth(3);
+        this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + score, scoreConfig).setDepth(3);
     }
 }

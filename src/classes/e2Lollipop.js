@@ -58,11 +58,9 @@ class e2Lollipop extends Enemy {
         //console.log(this.body.acceleration);
         if(this.body.acceleration.x < 100 && this.body.acceleration.y < 100){
             // console.log("1");
-            this.setTexture('lollipop1');
             this.body.setSize(this.width, this.height);
         } else {
             // console.log("1");
-            this.setTexture('lollipop2');
             this.body.setSize(this.width, this.height);
         }
     }
@@ -71,10 +69,20 @@ class e2Lollipop extends Enemy {
         this.body.setVelocity(0, 0);
 
         if (this.forceX != 0 && 1 < Math.abs(this.forceX)) this.forceX *= this.decelerate;
-        else this.forceX = 0;
+        else {
+            this.forceX = 0;
+        }
         if (this.forceY != 0 && 1 < Math.abs(this.forceY)) this.forceY *= this.decelerate;
-        else this.forceY = 0;
+        else {
+            this.forceY = 0;
+        }
 
         this.body.setAcceleration(this.forceX, this.forceY);
+
+        if (this.forceX == 0 && this.forceY == 0) {
+            this.setTexture('lollipop1');
+        } else {
+            this.setTexture('lollipop2');
+        }
     }
 }

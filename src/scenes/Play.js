@@ -105,7 +105,7 @@ class Play extends Phaser.Scene {
         this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
-        this.upgradesRate = 1000//3000;
+        this.upgradesRate = 100//3000;
         this.upgradesTimer = this.upgradesRate;
 
         this.initCanvasAndUI();

@@ -36,6 +36,7 @@ let playerHp = startingHp;
 let playerBullets = [];
 let playerBulletDamage = 1;
 let playerBulletSpeed = 7;
+let maxedUpgrades = [];
 
 let highScore = 0;
 let newHighScore = false;

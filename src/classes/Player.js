@@ -67,7 +67,7 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     upgrade(value, type, success){
-        let popUpConfig = {
+        const popUpConfig = {
             fontFamily: 'Courier',
             fontSize: '18px',
             color: '#000',
@@ -92,11 +92,12 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         });
 
-        popUpConfig.fontSize = '24px';
-        popUpConfig.color = '#ff0000';
+        const diffConfig = Object.assign({}, popUpConfig, { fontSize: '24px', color:'#ff0000' });
 
         // Place difficulty increase notification at the top of the screen
-        let DiffText = this.scene.add.text(this.scene.cameras.main.scrollX + game.config.width/2.75, this.scene.cameras.main.scrollY + 150, 'Difficulty Increased!', popUpConfig).setOrigin(0, 0.5).setDepth(3);
+        let DiffText;
+        if (gameDifficulty < 6) DiffText = this.scene.add.text(this.scene.cameras.main.scrollX + game.config.width/2.75, this.scene.cameras.main.scrollY + 150, 'Difficulty Increased!', diffConfig).setOrigin(0, 0.5).setDepth(3);
+        else DiffText = this.scene.add.text(this.scene.cameras.main.scrollX + game.config.width/2.75, this.scene.cameras.main.scrollY + 150, 'Difficulty Maxed!', diffConfig).setOrigin(0, 0.5).setDepth(3);
         this.scene.tweens.add({
             targets: DiffText,
             alpha: 0,

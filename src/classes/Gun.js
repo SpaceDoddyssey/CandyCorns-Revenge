@@ -3,7 +3,6 @@ class Gun extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         scene.add.existing(this);
         this.scene = scene;
-        this.type = "gun";
         this.scale = 0.1;
 
         this.recoil = -50000; 
@@ -14,7 +13,9 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.spread = 0;
 
         this.distanceFromPlayer = 36; 
-        this.playerSprite; //Set by Play
+        this.player;
+
+        this.offsetY = 0;
 
         //scene.input.on('pointerdown', this.fire.bind(this));
     }
@@ -31,8 +32,11 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.scene.sound.play('gunfire', { volume: 0.3 });
         let randSpread = Phaser.Math.FloatBetween(-this.spread, this.spread);
         let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet', this.rotation * (1 + randSpread)).setOrigin(0.5, 0.5);
-        if (this.type == "minigun") {
+        if (this.player.type == "minigun") {
             bullet.setScale(0.2);
+        }
+        if (this.player.type == "double") {
+            bullet.setScale(0.25);
         }
         playerBullets.push(bullet);
         this.fireCooldown = this.fireRate;
@@ -42,21 +46,21 @@ class Gun extends Phaser.GameObjects.Sprite {
         var pointer = this.scene.input.activePointer;
 
         // Calculate angle between player sprite and cursor position
-        var angle = Phaser.Math.Angle.Between(this.playerSprite.x, this.playerSprite.y, 
+        var angle = Phaser.Math.Angle.Between(this.player.x, this.player.y, 
                                                    pointer.worldX, pointer.worldY);
         if (angle > Math.PI / 2 || angle < -Math.PI / 2){
             this.flipY = true;
-            this.playerSprite.flipX = true;
+            this.player.flipX = true;
         } else {
             this.flipY = false;
-            this.playerSprite.flipX = false;
+            this.player.flipX = false;
         }
         
         this.rotation = angle;
         
         // Calculate the position of the moving sprite based on the angle and distance
-        var targetX = this.playerSprite.x + Math.cos(angle) * this.distanceFromPlayer;
-        var targetY = this.playerSprite.y + Math.sin(angle) * this.distanceFromPlayer;
+        var targetX = this.player.x + Math.cos(angle) * this.distanceFromPlayer;
+        var targetY = this.player.y + Math.sin(angle) * this.distanceFromPlayer + this.offsetY;
 
         this.x = targetX;
         this.y = targetY;

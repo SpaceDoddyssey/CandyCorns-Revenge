@@ -65,7 +65,9 @@ class Play extends Phaser.Scene {
         const playerSpawn = map.findObject('PlayerSpawn', obj => obj.name === 'playerSpawn');
         player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
-        player.gun.playerSprite = player;
+        player.gun.player = player;
+        player.type = "gun";
+        player.firingGun = 'gun1';
 
         if(spikesLayer && spikesLayer.objects){
 			spikesLayer.objects.forEach(
@@ -105,7 +107,7 @@ class Play extends Phaser.Scene {
         this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
-        this.upgradesRate = 100//3000;
+        this.upgradesRate = 3000;
         this.upgradesTimer = this.upgradesRate;
 
         this.initCanvasAndUI();
@@ -234,8 +236,6 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
-
-        console.log(gameDifficulty);
         //This code limits the update rate to 60/s
         this.frameTime += delta;
         if(this.frameTime < 16.5){

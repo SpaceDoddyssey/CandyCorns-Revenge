@@ -14,7 +14,7 @@ class Upgrades extends Phaser.Scene {
         this.maxUpgrades = 3;
         this.currentUpgrades = 0;
         this.verticalSpacing = -100;
-        this.potentialUpgrades = ['Damage Up', 'Bullet Speed Up', 'Fire Rate Up', 'Minigun'];
+        this.potentialUpgrades = ['Damage Up', 'Bullet Speed Up', 'Fire Rate Up', 'Minigun', 'Double Gun'];
 
         // Splice potential upgrades by all elements inside of maxedUpgrades
         for (let i = 0; i < maxedUpgrades.length; i++) {
@@ -34,7 +34,7 @@ class Upgrades extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        let mainText = this.add.text(centerX, centerY - 200, ' Select an upgrade to continue (Not implemented) ', textConfig).setOrigin(0.5);
+        let mainText = this.add.text(centerX, centerY - 200, 'Select an upgrade to continue', textConfig).setOrigin(0.5);
 
         keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
@@ -49,6 +49,9 @@ class Upgrades extends Phaser.Scene {
 
         this.maxMinigunFireRateCap = 4;
         this.minigunFireRateInc = -1;
+
+        this.maxDoubleFireRate = 15;
+        this.doubleFireRateInc = -1;
 
         this.SkipButton = false;
     }
@@ -85,7 +88,7 @@ class Upgrades extends Phaser.Scene {
                 if (playerBulletDamage != this.maxDamage) success = true;
                 else {
                     success = false;
-                    maxedUpgrades.push("Damage Up");
+                    maxedUpgrades.push('Damage Up');
                 }
                 this.scene.resume('playScene').stop();
                 if (gameDifficulty < maxDifficulty) gameDifficulty++;
@@ -93,13 +96,13 @@ class Upgrades extends Phaser.Scene {
             })
         }
         else if (upgrade == 'Bullet Speed Up') {
-            this.add.sprite(centerX - 130, centerY + this.verticalSpacing, 'bulletspeedup').setScale(2).setOrigin(0.5).setScale(0.2);
+            this.add.sprite(centerX - 130, centerY + this.verticalSpacing, 'bulletspeedup').setScale(0.2).setOrigin(0.5);
             let upgrade2 = new Button(centerX, centerY + this.verticalSpacing, 'Bullet Speed Up', this, () => {
                 playerBulletSpeed += this.bulletSpeedInc;
                 if (playerBulletSpeed < this.maxBulletSpeed) success = true;
                 else {
                     success = false;
-                    maxedUpgrades.push("Bullet Speed Up");
+                    maxedUpgrades.push('Bullet Speed Up');
                 }
                 this.scene.resume('playScene').stop();
                 if (gameDifficulty < maxDifficulty) gameDifficulty++;
@@ -107,49 +110,93 @@ class Upgrades extends Phaser.Scene {
             })
         }
         else if (upgrade == 'Fire Rate Up') {
-            this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'firerateup').setScale(2).setOrigin(0.5).setScale(0.2);
+            this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'firerateup').setScale(0.2).setOrigin(0.5);
             let upgrade3 = new Button(centerX, centerY + this.verticalSpacing, 'Fire Rate Up', this, () => {
                 let upgradeValue = 0;
-                if (player.gun.type == "gun" && player.gun.fireRate > this.maxGunFireRate) {
+                if (player.type == "gun" && player.gun.fireRate > this.maxGunFireRate) {
                     player.gun.fireRate += this.gunFireRateInc;
                     upgradeValue = -this.gunFireRateInc;
                     if (player.gun.fireRate > this.maxGunFireRate) success = true;
                     else {
                         success = false;
-                        maxedUpgrades.push("Fire Rate Up");
+                        maxedUpgrades.push('Fire Rate Up');
                     }
                 }
-                else if (player.gun.type == "minigun" && player.gun.fireRateCap > this.maxMinigunFireRateCap) {
+                else if (player.type == "minigun" && player.gun.fireRateCap > this.maxMinigunFireRateCap) {
                     player.gun.fireRateCap += this.minigunFireRateInc;
                     upgradeValue = -this.minigunFireRateInc;
                     if (player.gun.fireRateCap > this.maxMinigunFireRateCap) success = true;
                     else {
                         success = false;
-                        maxedUpgrades.push("Fire Rate Up");
+                        maxedUpgrades.push('Fire Rate Up');
                     }
                 }
+                else if (player.type == "double" && player.gun.fireRate > this.maxDoubleFireRate) {
+                    player.gun.fireRate += this.doubleFireRateInc;
+                    player.gun2.fireRate = player.gun.fireRate;
+                    upgradeValue = -this.doubleFireRateInc;
+                    if (player.gun.fireRate > this.maxDoubleFireRate) success = true;
+                    else {
+                        success = false;
+                        maxedUpgrades.push('Fire Rate Up');
+                    }
+                }
+
                 this.scene.resume('playScene').stop()
                 if (gameDifficulty < maxDifficulty) gameDifficulty++;
                 player.upgrade(upgradeValue, "fire rate", success);
             })
         }
         else if (upgrade == 'Minigun') {
-            this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'minigun').setScale(2).setOrigin(0.5).setScale(0.2);
+            this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'minigun').setScale(0.2).setOrigin(0.5);
             let upgrade4 = new Button(centerX, centerY + this.verticalSpacing, 'Minigun', this, () => {
-                if (player.gun.type != "minigun") {
+                if (player.type != "minigun") {
+                    if (player.type == "double") {
+                        player.gun2.destroy();
+                        player.gun2 = null;
+                        maxedUpgrades.splice(maxedUpgrades.indexOf('Double Gun'));
+                    }
                     player.gun.fireRateCap = 10;
                     success = true;
-                    if (maxedUpgrades.includes("Fire Rate Up")) maxedUpgrades.splice(maxedUpgrades.indexOf("Fire Rate Up"));
-                    maxedUpgrades.push("Minigun");
+                    if (maxedUpgrades.includes('Fire Rate Up')) maxedUpgrades.splice(maxedUpgrades.indexOf('Fire Rate Up'));
+                    maxedUpgrades.push('Minigun');
                 }
+                player.firingGun = 'gun1';
                 player.gun.setTexture('minigun');
                 player.gun.setScale(0.2);
                 player.gun.recoil = -35000;
-                player.gun.type = "minigun";
+                player.type = "minigun";
                 player.gun.spread = 0.05;
                 this.scene.resume('playScene').stop();
                 if (gameDifficulty < maxDifficulty) gameDifficulty++;
                 player.upgrade(1, "minigun", success);
+            })
+        }
+        else if (upgrade == 'Double Gun') {
+            this.add.sprite(centerX - 100, centerY + this.verticalSpacing - 15, 'gun').setScale(0.125).setOrigin(0.5);
+            this.add.sprite(centerX - 100, centerY + this.verticalSpacing, 'gun').setScale(0.1).setOrigin(0.5);
+            let upgrade5 = new Button(centerX, centerY + this.verticalSpacing, 'Double Gun', this, () => {
+                if (player.type != "double") {
+                    success = true;
+                    maxedUpgrades.push('Double Gun');
+                    if (player.type == "minigun") {
+                        maxedUpgrades.splice(maxedUpgrades.indexOf('Minigun'));
+                    }
+                    if (player.gun.fireRate < 15) {
+                        player.gun.fireRate = 15;
+                    }
+                }
+                player.gun.setTexture('gun');
+                player.gun.spread = 0.03;
+                player.gun.recoil = -40000;
+                
+                player.doubleGun();
+                player.gun2.spread = 0.03;
+                player.gun2.recoil = -40000;
+                
+                this.scene.resume('playScene').stop();
+                if (gameDifficulty < maxDifficulty) gameDifficulty++;
+                player.upgrade(1, "double gun", success);
             })
         }
     }

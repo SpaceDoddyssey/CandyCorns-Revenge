@@ -20,6 +20,8 @@ class Player extends Phaser.GameObjects.Sprite {
         this.firingSprite = 'player_firing';
         this.isFiring = false;            
         this.gun;
+        this.gun2;
+        this.type;
 
         // Movement
         //Adjust decelerate to change how fast the player declerates from the recoil
@@ -64,6 +66,16 @@ class Player extends Phaser.GameObjects.Sprite {
                 }
             });
         }
+    }
+
+    doubleGun() {
+        this.gun2 = new Gun(this.scene, 0, 0, 'gun').setOrigin(0.5, 0.5);
+        this.gun2.player = player;
+        this.gun2.distanceFromPlayer = 20;
+        this.gun2.offsetY = 5;
+        this.gun2.scale = 0.075;
+        this.gun.scale = 0.075;
+        this.type = "double";
     }
 
     upgrade(value, type, success){
@@ -111,10 +123,11 @@ class Player extends Phaser.GameObjects.Sprite {
         });
     }
 
-    fire() {
+    fire(gun) {
         // Fires the Player's gun
 
-        this.gun.fire();
+        if (gun == 'gun1') this.gun.fire();
+        else if (gun == 'gun2') this.gun2.fire();
 
         var pointer = this.scene.input.activePointer;
         var angle = Phaser.Math.Angle.Between(this.x, this.y, pointer.x + this.scene.cameras.main.scrollX, pointer.y + this.scene.cameras.main.scrollY);
@@ -153,7 +166,10 @@ class Player extends Phaser.GameObjects.Sprite {
 
     gunUpdate() {
         // Player Firing Logic
-        this.gun.update(); 
+        this.gun.update();
+        if (this.gun2 != null) {
+            this.gun2.update();
+        }
 
         if (game.input.activePointer.isDown){
             //console.log("firing")
@@ -162,18 +178,29 @@ class Player extends Phaser.GameObjects.Sprite {
             }
             this.isFiring = true;
         } else {
-            if (this.gun.type == "minigun") this.gun.fireRate = 35;
+            if (this.type == "minigun") this.gun.fireRate = 35;
             this.isFiring = false;
         }
 
-        if(this.isFiring){
+        if(this.isFiring) {
             if (this.iframes == 0) this.setTexture(this.firingSprite); 
             else this.setTexture(this.hurtSprite);
-            if(this.gun.fireCooldown == 0){
-                this.fire();
-                if (this.gun.type == "minigun") {
+            if (this.gun.fireCooldown <= 0 || (this.gun2 != null && this.gun2.fireCooldown <= 0)) {
+                if (this.firingGun == 'gun1' && this.gun.fireCooldown <= 0) this.fire(this.firingGun);
+
+                else if (this.firingGun == 'gun2' && this.gun2.fireCooldown <= 0) this.fire(this.firingGun);
+
+                if (this.type == "minigun") {
                     if (this.gun.fireRate > this.gun.fireRateCap) this.gun.fireRate -= 5;
                     else this.gun.fireRate = this.gun.fireRateCap;
+                }
+                if (this.firingGun == 'gun1' && this.type == "double") {
+                    this.firingGun = 'gun2';
+                    this.gun2.fireCooldown = this.gun2.fireRate/2;
+                }
+                else if (this.firingGun == 'gun2' && this.type == "double") {
+                    this.firingGun = 'gun1';
+                    this.gun.fireCooldown = this.gun.fireRate/2;
                 }
             }
         } else if (this.iframes == 0) {

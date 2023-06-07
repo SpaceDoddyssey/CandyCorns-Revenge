@@ -11,7 +11,7 @@ class Player extends Phaser.GameObjects.Sprite {
         this.hurtSprite = 'player_hurt';
         this.iframes = 0;
         this.depth = 1;
-        this.takeDamage(0, 100);//This is so there is flashing when you spawn and not JUST iframes
+        //this.takeDamage(0, 100);//This is so there is flashing when you spawn and not JUST iframes
 
         this.heroColor = new Phaser.Display.Color(255, 255, 255);
         this.invincibleColor = new Phaser.Display.Color(255, 4, 9);

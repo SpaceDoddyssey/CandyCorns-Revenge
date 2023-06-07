@@ -8,13 +8,19 @@ class Menu extends Phaser.Scene {
         this.load.audio('gunfire', 'player_gun_sound.wav');
         this.load.audio('hit', 'player_damaged.wav');
         this.load.audio('death', 'enemydeath.wav');
+        
+        this.load.image('TitleScreen', 'TitleScreen.png');
+        this.load.image('TitleBackground', 'TitleBackground.png');
     }
 
     create() {
+        // Add background image to the center of the screen
+        this.add.image(centerX, centerY, 'TitleBackground');
+        this.add.image(centerX + 10, centerY, 'TitleScreen').setScale(1.1);
         // menu text configuration
         let menuConfig = {
             fontFamily: 'Courier',
-            fontSize: '28px',
+            fontSize: '12px',
             backgroundColor: '#F3B141',
             color: '#000',
             align: 'center',
@@ -28,11 +34,11 @@ class Menu extends Phaser.Scene {
         keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         // show menu text
-        let titleText    = this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4 - borderPadding, ' Candy Corn\'s Revenge ', menuConfig).setOrigin(0.5);
-        let storyText    = this.add.text(game.config.width/2, game.config.height/2                   , ' Candy Corn is tired of being called not a real candy \nNow he takes his vengeance ', menuConfig).setOrigin(0.5);
-        let tutorialText = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 3, ' WASD to move, click to fire \n Hold to continue firing \n P to Pause, F to toggle Fullscreen ', menuConfig).setOrigin(0.5, 0);
-        menuConfig.backgroundColor = '#00FF00';
-        const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 12,  'PLAY', menuConfig).setOrigin(0.5).setInteractive();
+        let storyText    = this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4, ' Candy Corn is tired of\n being called not a real candy. \n Now he takes his vengeance! ', menuConfig).setOrigin(0.5);
+        let tutorialText = this.add.text(game.config.width/2, game.config.height/2 - borderUISize, ' WASD to move, click to fire \n Hold to continue firing \n P to Pause, F to toggle Fullscreen ', menuConfig).setOrigin(0.5, 0);
+        menuConfig.backgroundColor = '#FF0000';
+        menuConfig.fontSize = '24px';
+        const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 6,  'PLAY', menuConfig).setOrigin(0.5).setInteractive();
         //-------------------------------------------
         Ready = false; //CHANGE TO REENABLE THE MENU
         //-------------------------------------------

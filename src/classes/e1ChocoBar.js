@@ -7,6 +7,7 @@ class e1ChocoBar extends Enemy {
         this.gun;
         this.hasGun = true;
         this.moveSpeed = 30;
+        this.damage = 1;
     }
 
     followPlayer() {
@@ -28,5 +29,6 @@ class e1ChocoBar extends Enemy {
 
         super.update();
         this.gun.update();
+        this.gun.damage = this.damage;
     }
 }

@@ -6,6 +6,7 @@ class e4Marshmallow extends Enemy {
         this.minScale = 0.075;
         this.maxScale = 0.2;
         this.hp = 3;
+        this.damage = 2;
         this.body.setImmovable();
     }
     
@@ -19,7 +20,7 @@ class e4Marshmallow extends Enemy {
 
         // If enemy collides with player, player takes damage
         if (Math.abs(this.x - this.player.x) < this.width*this.scale && Math.abs(this.y - this.player.y) < this.height*this.scale) {
-            this.player.takeDamage(1, 150);
+            this.player.takeDamage(this.damage, 150);
         }
 
         // Increase in size rapidly when player is near

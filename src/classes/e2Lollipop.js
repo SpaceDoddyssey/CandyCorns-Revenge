@@ -5,6 +5,7 @@ class e2Lollipop extends Enemy {
         //this.jumpSpeed = 50;
         this.scale = 0.2;
         this.hp = 3;
+        this.damage = 1;
 
         this.jumpState = false;
         this.jumpTimer = 100;
@@ -41,7 +42,7 @@ class e2Lollipop extends Enemy {
         }
 
         if (Math.abs(this.x - this.player.x) < this.player.width*this.player.scale && Math.abs(this.y - this.player.y) < this.player.height*this.player.scale) {
-            this.player.takeDamage(1, 150);
+            this.player.takeDamage(this.damage, 150);
         }
 
         this.jumpTimer--;

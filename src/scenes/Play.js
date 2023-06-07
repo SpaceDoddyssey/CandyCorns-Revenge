@@ -29,6 +29,7 @@ class Play extends Phaser.Scene {
     }
     
     create() {
+        gameDifficulty = 1;
         enemyBullets = [];
         enemies = [];
         playerBullets = [];

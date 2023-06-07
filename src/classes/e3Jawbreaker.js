@@ -7,6 +7,7 @@ class e3Jawbreaker extends Enemy {
         this.hp = 10;
 
         this.moveSpeed = 20;
+        this.damage = 3;
         
         this.velocity = new Phaser.Math.Vector2();
     }
@@ -35,7 +36,7 @@ class e3Jawbreaker extends Enemy {
     update() {
 
         if (Math.abs(this.x - this.player.x) < this.player.width*this.player.scale && Math.abs(this.y - this.player.y) < this.player.height*this.player.scale) {
-            this.player.takeDamage(3, 150);
+            this.player.takeDamage(this.damage, 150);
         }
         this.followPlayer();
 

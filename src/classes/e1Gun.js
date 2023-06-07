@@ -12,6 +12,8 @@ class e1Gun extends Phaser.GameObjects.Sprite {
         this.e1Distance = 36; 
         this.e1Sprite;
 
+        this.damage;
+
         //scene.input.on('pointerdown', this.fire.bind(this));
     }
 
@@ -37,6 +39,7 @@ class e1Gun extends Phaser.GameObjects.Sprite {
     fire() {
         let bullet = new EnemyBullet(this.scene, this.x, this.y, 'enemybullet').setOrigin(0.5, 0.5);
         bullet.rotation = this.rotation;
+        bullet.damage = this.damage;
         enemyBullets.push(bullet);
         this.fireCooldown = this.fireRate;
     }

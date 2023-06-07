@@ -122,25 +122,19 @@ class Play extends Phaser.Scene {
           spawnPoint.y = Phaser.Math.RND.between(50, map.heightInPixels - 50);
         } while (Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) <= minDistFromPlayer
               || Phaser.Math.Distance.Between(player.x, player.y, spawnPoint.x, spawnPoint.y) >= maxDistFromPlayer );
-        
-        var randomEnemy = Phaser.Math.RND.between(1, 7);
+
         var enemy;
 
-        if (randomEnemy == 1) {
-            enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
-            enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
-            enemy.gun.e1Sprite = enemy;
-        } else if (randomEnemy == 2) {
-            enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
-        } else if (randomEnemy == 3) {
-            enemy = new e4Marshmallow(this, spawnPoint.x, spawnPoint.y, 'marshmallow').setOrigin(0.5, 0.5);
-            this.physics.add.collider(player, enemy);
-        } else if (randomEnemy == 4) {
-            enemy = new e5GummyBear(this, spawnPoint.x, spawnPoint.y, 'gummybear1').setOrigin(0.5, 0.5);
-            enemy.setTint(Phaser.Math.RND.between(0, 0xffffff));
-        }
-        else {
-            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        if (gameDifficulty == 1) {
+            enemy = this.difficultyOne(spawnPoint);
+        } else if (gameDifficulty == 2) {
+            enemy =this.difficultyTwo(spawnPoint);
+        } else if (gameDifficulty == 3) {
+            enemy = this.difficultyThree(spawnPoint);
+        } else if (gameDifficulty == 4) {
+            enemy = this.difficultyFour(spawnPoint);
+        } else if (gameDifficulty == 5) {
+            enemy = this.difficultyFive(spawnPoint);
         }
 
         this.physics.add.collider(enemy, objectLayer);
@@ -150,9 +144,66 @@ class Play extends Phaser.Scene {
         enemies.push(enemy);
     }
 
+    difficultyOne(spawnPoint) {
+        var enemy;
+        enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        return enemy;
+    }
+
+    difficultyTwo(spawnPoint) {
+        var randomEnemy = Phaser.Math.RND.between(1, 3);
+        var enemy;
+        if (randomEnemy == 1) {
+            enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
+            enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
+            enemy.gun.e1Sprite = enemy;
+        } else enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        return enemy;
+    }
+
+    difficultyThree(spawnPoint) {
+        var randomEnemy = Phaser.Math.RND.between(1, 6);
+        var enemy;
+        if (randomEnemy == 1 || randomEnemy == 2) {
+            enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
+            enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
+            enemy.gun.e1Sprite = enemy;
+        } else if (randomEnemy == 6) {
+            enemy = new e4Marshmallow(this, spawnPoint.x, spawnPoint.y, 'marshmallow').setOrigin(0.5, 0.5);
+        } 
+        else 
+            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        return enemy;
+    }
+
+    difficultyFour(spawnPoint) {
+        var randomEnemy = Phaser.Math.RND.between(1, 12);
+        var enemy;
+        if (randomEnemy == 1 || randomEnemy == 2 || randomEnemy == 3) {
+            enemy = new e1ChocoBar(this, spawnPoint.x, spawnPoint.y, 'chocobar').setOrigin(0.5, 0.5);
+            enemy.gun = new e1Gun(this, 0, 0, 'e1_gun');
+            enemy.gun.e1Sprite = enemy;
+        }
+        else if (randomEnemy == 4 || randomEnemy == 5) {
+            enemy = new e4Marshmallow(this, spawnPoint.x, spawnPoint.y, 'marshmallow').setOrigin(0.5, 0.5);
+        } else if (randomEnemy == 6 || randomEnemy == 7) {
+            enemy = new e5GummyBear(this, spawnPoint.x, spawnPoint.y, 'gummybear1').setOrigin(0.5, 0.5);
+            enemy.setTint(Phaser.Math.RND.between(0, 0xffffff));
+        }
+        else
+            enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+        return enemy;
+    }
+
+    difficultyFive(spawnPoint) {
+        var enemy;
+        enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
+        return enemy;
+    }
+
     update(time, delta) {
 
-
+        console.log(gameDifficulty);
         //This code limits the update rate to 60/s
         this.frameTime += delta;
         if(this.frameTime < 16.5){

@@ -26,7 +26,6 @@ class Player extends Phaser.GameObjects.Sprite {
         //  - decelerate should be within the range 0 < decelerate < 1
         //  - the smaller decelerate is, the faster the player will slow down, and vice versa.
         this.decelerate = 0.8;
-        this.moveSpeed = manualMoveSpeed; //pixels per frame
         this.velocity = new Phaser.Math.Vector2();
     }
 
@@ -117,8 +116,6 @@ class Player extends Phaser.GameObjects.Sprite {
 
         this.gunUpdate();
 
-        this.moveUpdate();
-
         this.decelUpdate();
 
         this.hurtUpdate();
@@ -154,7 +151,6 @@ class Player extends Phaser.GameObjects.Sprite {
             if(this.gun.fireCooldown == 0){
                 this.fire();
                 if (this.gun.type == "minigun") {
-                    console.log("minigun firing");
                     if (this.gun.fireRate > this.gun.fireRateCap) this.gun.fireRate -= 5;
                     else this.gun.fireRate = this.gun.fireRateCap;
                 }
@@ -162,28 +158,6 @@ class Player extends Phaser.GameObjects.Sprite {
         } else if (this.iframes == 0) {
             this.setTexture(this.idleSprite);
         }
-    }
-
-    moveUpdate() {
-        // Player Directional Movement
-
-        this.velocity.set(0,0);
-
-        if(keyUP.isDown) {
-            this.velocity.y = -1;
-        } else if (keyDOWN.isDown) {
-            this.velocity.y = 1;
-        }
-
-        if(keyLEFT.isDown){
-            this.velocity.x = -1;
-        } else if(keyRIGHT.isDown) {
-            this.velocity.x = 1;
-        }
-
-        this.velocity.normalize();
-        
-        this.body.setVelocity(this.velocity.x * this.moveSpeed, this.velocity.y * this.moveSpeed);
     }
 
     decelUpdate() {

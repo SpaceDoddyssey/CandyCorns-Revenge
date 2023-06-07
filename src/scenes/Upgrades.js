@@ -60,6 +60,7 @@ class Upgrades extends Phaser.Scene {
                 else success = false;
                 this.scene.resume('playScene').stop()
                 player.upgrade(1, "damage", success);
+                if (gameDifficulty < 5) gameDifficulty++;
             })
         }
         else if (num == 2) {
@@ -72,6 +73,7 @@ class Upgrades extends Phaser.Scene {
                 else success = false;
                 this.scene.resume('playScene').stop()
                 player.upgrade(2, "bullet speed", success);
+                if (gameDifficulty < 5) gameDifficulty++;
             })
         }
         else if (num == 3) {
@@ -91,6 +93,7 @@ class Upgrades extends Phaser.Scene {
                 else success = false;
                 this.scene.resume('playScene').stop()
                 player.upgrade(upgradeValue, "fire rate", success);
+                if (gameDifficulty < 5) gameDifficulty++;
             })
         }
         else if (num == 4) {
@@ -105,9 +108,10 @@ class Upgrades extends Phaser.Scene {
                 player.gun.setScale(0.2);
                 player.gun.recoil = -35000;
                 player.gun.type = "minigun";
-                player.gun.spread = 0.04;
+                player.gun.spread = 0.05;
                 this.scene.resume('playScene').stop()
                 player.upgrade(1, "minigun", success);
+                if (gameDifficulty < 5) gameDifficulty++;
             })
         }
     }

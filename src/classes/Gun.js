@@ -28,10 +28,8 @@ class Gun extends Phaser.GameObjects.Sprite {
     }
 
     fire() {
-        console.log(this.fireRate);
         this.scene.sound.play('gunfire', { volume: 0.3 });
         let randSpread = Phaser.Math.FloatBetween(-this.spread, this.spread);
-        console.log(randSpread);
         let bullet = new PlayerBullet(this.scene, this.x, this.y, 'playerbullet', this.rotation * (1 + randSpread)).setOrigin(0.5, 0.5);
         if (this.type == "minigun") {
             bullet.setScale(0.2);

@@ -60,6 +60,7 @@ let maxDifficulty = 6;
 
 let bossActive = false;
 let boss = null;
+let playResume = false;
 
 const popUpConfig = {
     fontFamily: 'Courier',

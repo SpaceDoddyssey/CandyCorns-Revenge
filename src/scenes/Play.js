@@ -110,7 +110,7 @@ class Play extends Phaser.Scene {
         this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
-        this.upgradesRate = 3000;
+        this.upgradesRate = 100//3000;
         this.upgradesTimer = this.upgradesRate;
 
         this.initCanvasAndUI();
@@ -335,11 +335,13 @@ class Play extends Phaser.Scene {
             if (gameDifficulty < maxDifficulty) gameDifficulty++;
         }
 
-        if (gameDifficulty % 5 != 0) this.enemyWave();
-        else if (bossActive == false) {
+        if (playResume == true && !bossActive && gameDifficulty % 5 == 0) {
             this.spawnEnemy();
             bossActive = true;
-        }
+            playResume = false;
+        } 
+
+        if (gameDifficulty % 5 != 0 && !bossActive) this.enemyWave();
     }
 
     uiUpdate() {

@@ -80,6 +80,9 @@ class Upgrades extends Phaser.Scene {
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(this.damageUpIncrease, "damage", success);
+                if (gameDifficulty % 5 == 0 && bossActive == false) {
+                    playResume = true;
+                }
             })
         }
         else if (upgrade == 'Bullet Speed Up') {
@@ -94,6 +97,9 @@ class Upgrades extends Phaser.Scene {
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(this.bulletSpeedInc, "bullet speed", success);
+                if (gameDifficulty % 5 == 0 && bossActive == false) {
+                    playResume = true;
+                }
             })
         }
         else if (upgrade == 'Fire Rate Up') {
@@ -131,6 +137,9 @@ class Upgrades extends Phaser.Scene {
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(upgradeValue, "fire rate", success);
+                if (gameDifficulty % 5 == 0 && bossActive == false) {
+                    playResume = true;
+                }
             })
         }
         else if (upgrade == 'Minigun') {
@@ -156,6 +165,9 @@ class Upgrades extends Phaser.Scene {
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(1, "minigun", success);
+                if (gameDifficulty % 5 == 0 && bossActive == false) {
+                    playResume = true;
+                }
             })
         }
         else if (upgrade == 'Double Gun') {
@@ -183,6 +195,9 @@ class Upgrades extends Phaser.Scene {
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(1, "double gun", success);
+                if (gameDifficulty % 5 == 0 && bossActive == false) {
+                    playResume = true;
+                }
             })
         }
     }

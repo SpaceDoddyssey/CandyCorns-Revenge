@@ -79,12 +79,6 @@ class Player extends Phaser.GameObjects.Sprite {
     }
 
     upgrade(value, type, success){
-        const popUpConfig = {
-            fontFamily: 'Courier',
-            fontSize: '18px',
-            color: '#000',
-            align: 'center'
-        }
 
         console.log("Picked upgrade ", type);
         console.log("Scene = ", this.scene);
@@ -103,8 +97,6 @@ class Player extends Phaser.GameObjects.Sprite {
                 Upgraded.destroy();
             }
         });
-
-        const diffConfig = Object.assign({}, popUpConfig, { fontSize: '24px', color:'#ff0000' });
 
         // Place difficulty increase notification at the top of the screen
         let DiffText;

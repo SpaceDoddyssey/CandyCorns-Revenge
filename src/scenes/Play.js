@@ -30,6 +30,9 @@ class Play extends Phaser.Scene {
     
     create() {
         gameDifficulty = 1;
+        this.followBoss = false;
+        this.followBossTime = 350;
+        this.bossIntroText = null;
         enemyBullets = [];
         enemies = [];
         playerBullets = [];
@@ -95,7 +98,7 @@ class Play extends Phaser.Scene {
         }
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.startFollow(player, true, 0.25, 0.25);
+
         this.physics.world.bounds.setTo(0, 0, map.widthInPixels, map.heightInPixels);
 
         player.body.setCollideWorldBounds(true);
@@ -142,18 +145,46 @@ class Play extends Phaser.Scene {
             enemy.hp += 3;
             enemy.damage += 2;
         } else if (gameDifficulty == 5) {
-            enemy = this.difficultyFive(spawnPoint);
+            enemy = this.difficultyFive();
+            boss = enemy;
+            this.followBoss = true;
+
+            this.bossIntroText = this.add.text(this.cameras.main.scrollX + (game.config.width - 250)/2, this.cameras.main.scrollY, 'JAWBREAKER!!', bossIntroConfig).setOrigin(0, 0.5).setDepth(3);
+            this.tweens.add({
+                targets: this.bossIntroText,
+                alpha: 0,
+                duration: 3000,
+                ease: 'Linear',
+                repeat: 0,
+                yoyo: false,
+                onComplete: () => {
+                    this.bossIntroText.destroy();
+                }
+            });
         } else if (gameDifficulty == 6) {
             enemy = this.difficultySix(spawnPoint);
             enemy.hp += 5;
             enemy.damage += 3;
         }
 
-        this.physics.add.collider(enemy, objectLayer);
+        if (!enemy.boss) this.physics.add.collider(enemy, objectLayer);
         this.physics.add.collider(enemy, borderLayer);
 
         enemy.player = player;
         enemies.push(enemy);
+    }
+
+    enemyWave() {
+        this.enemySpawnTimer--;
+        if (this.enemySpawnTimer < 0) {
+            for (let i = 0; i < this.enemiesPerSpawn; i++) {
+                this.spawnEnemy();
+            }
+            this.enemySpawnTimer = this.enemySpawnRate;
+            if (this.enemySpawnRate > this.fastestAllowedSpawnRate){
+                this.enemySpawnRate -= 10;
+            }
+        }
     }
 
     difficultyOne(spawnPoint) {
@@ -207,9 +238,9 @@ class Play extends Phaser.Scene {
         return enemy;
     }
 
-    difficultyFive(spawnPoint) {
+    difficultyFive() {
         var enemy;
-        enemy = new e3Jawbreaker(this, spawnPoint.x, spawnPoint.y, 'jawbreaker').setOrigin(0.5, 0.5);
+        enemy = new b1Jawbreaker(this, centerX, centerY, 'jawbreaker').setOrigin(0.5, 0.5);
         return enemy;
     }
 
@@ -243,6 +274,12 @@ class Play extends Phaser.Scene {
         }
         this.frameTime = 0;
 
+        if (!this.followBoss) this.cameras.main.startFollow(player, true, 0.25, 0.25);
+        else if (this.followBossTime > 0 ) {
+            this.cameras.main.startFollow(boss, true, 0.25, 0.25);
+            this.followBossTime--;
+        } else this.followBoss = false;
+
         //This code is for bebugging purposes; It artificially chokes the fps by doing a buttload of unnecessary math each update
         //for(let i = 0; i < 50000000; i++){ let j = 0; j++; j *= 13; j /= 12; }
 
@@ -265,6 +302,13 @@ class Play extends Phaser.Scene {
         enemies.forEach((enemy, index, array) => {
             enemy.update(); 
             if (enemy.markedForDeath) {
+                if (enemy.boss == true) {
+                    bossActive = false;
+                    boss = null;
+                    this.scene.pause().launch('upgradesScene');
+                    if (gameDifficulty < maxDifficulty) gameDifficulty++;
+                    this.upgradesTimer = this.upgradesRate;
+                }
                 array.splice(index, 1);
                 enemy.destroy();
                 if (enemy.hasGun) enemy.gun.destroy();
@@ -272,17 +316,6 @@ class Play extends Phaser.Scene {
                 this.addScore(enemy.scoreValue);
             }
         })
-
-        this.enemySpawnTimer--;
-        if(this.enemySpawnTimer < 0){
-            for(let i = 0; i < this.enemiesPerSpawn; i++){
-                this.spawnEnemy();
-            }
-            this.enemySpawnTimer = this.enemySpawnRate;
-            if(this.enemySpawnRate > this.fastestAllowedSpawnRate){
-                this.enemySpawnRate -= 10;
-            }
-        }
 
         if (Phaser.Input.Keyboard.JustDown(keyPause)) {
             // .pause will stop the update step but still render the scene
@@ -295,9 +328,17 @@ class Play extends Phaser.Scene {
         }
 
         this.upgradesTimer--;   
-        if(this.upgradesTimer < 0){
+        console.log(bossActive);
+        if(this.upgradesTimer < 0 && bossActive == false) {
             this.upgradesTimer = this.upgradesRate;
-            this.scene.pause().launch('upgradesScene')
+            this.scene.pause().launch('upgradesScene');
+            if (gameDifficulty < maxDifficulty) gameDifficulty++;
+        }
+
+        if (gameDifficulty % 5 != 0) this.enemyWave();
+        else if (bossActive == false) {
+            this.spawnEnemy();
+            bossActive = true;
         }
     }
 
@@ -313,6 +354,11 @@ class Play extends Phaser.Scene {
         this.difficultyCounter.x = this.cameras.main.scrollX + (game.config.width - 250)/2;
         this.difficultyCounter.y = this.cameras.main.scrollY;
         this.difficultyCounter.text = 'Difficulty: ' + gameDifficulty;
+
+        if (this.bossIntroText != null) {
+            this.bossIntroText.x = this.cameras.main.scrollX + (game.config.width - this.bossIntroText.width)/2;
+            this.bossIntroText.y = this.cameras.main.scrollY + 120;
+        }
     }
 
     addScore(points){
@@ -326,27 +372,6 @@ class Play extends Phaser.Scene {
 
         this.playAreaLeftPad  = 320;
         this.playAreaRightPad = 35;
-
-        // Score text
-        const scoreConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F3B141',
-            color: '#843605',
-            align: 'left',
-            padding: {
-                top: 5,
-                bottom: 5,
-                left: 5,
-                right: 5
-            },
-            fixedWidth: 170,
-            setDepth: 0
-        }
-        const timeConfig = Object.assign({}, scoreConfig, { fixedWidth: 160 });
-        const gameOverConfig = Object.assign({}, scoreConfig, { fontSize: '56px', align: 'center', fixedWidth: 375 });
-        const restartConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 380 });
-        const difficultyConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 250 });
 
         // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
 

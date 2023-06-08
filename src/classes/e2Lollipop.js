@@ -2,7 +2,6 @@ class e2Lollipop extends Enemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
 
-        //this.jumpSpeed = 50;
         this.scale = 0.2;
         this.hp = 3;
         this.damage = 1;

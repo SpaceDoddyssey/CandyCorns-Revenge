@@ -2,6 +2,8 @@ class e5GummyBear extends Enemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
 
+        this.scoreValue = 3;
+
         this.scale = 0.3;
         this.hp = 4;
         this.moveSpeed = 10;

@@ -21,19 +21,6 @@ class Upgrades extends Phaser.Scene {
             this.potentialUpgrades.splice(this.potentialUpgrades.indexOf(maxedUpgrades[i]), 1);
         }
 
-        let textConfig = {
-            fontFamily: 'Courier',
-            fontSize: '28px',
-            backgroundColor: '#F0000C',
-            color: '#000',
-            align: 'center',
-            padding: {
-                top: 5,
-                bottom: 5,
-            },
-            fixedWidth: 0
-        }
-
         let mainText = this.add.text(centerX, centerY - 200, 'Select an upgrade to continue', textConfig).setOrigin(0.5);
 
         keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
@@ -90,8 +77,8 @@ class Upgrades extends Phaser.Scene {
                     success = false;
                     maxedUpgrades.push('Damage Up');
                 }
+                
                 this.scene.resume('playScene').stop();
-                if (gameDifficulty < maxDifficulty) gameDifficulty++;
                 player.upgrade(this.damageUpIncrease, "damage", success);
             })
         }
@@ -104,8 +91,8 @@ class Upgrades extends Phaser.Scene {
                     success = false;
                     maxedUpgrades.push('Bullet Speed Up');
                 }
+                
                 this.scene.resume('playScene').stop();
-                if (gameDifficulty < maxDifficulty) gameDifficulty++;
                 player.upgrade(this.bulletSpeedInc, "bullet speed", success);
             })
         }
@@ -141,9 +128,8 @@ class Upgrades extends Phaser.Scene {
                         maxedUpgrades.push('Fire Rate Up');
                     }
                 }
-
-                this.scene.resume('playScene').stop()
-                if (gameDifficulty < maxDifficulty) gameDifficulty++;
+                
+                this.scene.resume('playScene').stop();
                 player.upgrade(upgradeValue, "fire rate", success);
             })
         }
@@ -158,7 +144,7 @@ class Upgrades extends Phaser.Scene {
                     }
                     player.gun.fireRateCap = 10;
                     success = true;
-                    if (maxedUpgrades.includes('Fire Rate Up')) maxedUpgrades.splice(maxedUpgrades.indexOf('Fire Rate Up'));
+                    if (maxedUpgrades.includes('Fire Rate Up') && player.gun.fireRateCap > this.minigunFireRateCap) maxedUpgrades.splice(maxedUpgrades.indexOf('Fire Rate Up'));
                     maxedUpgrades.push('Minigun');
                 }
                 player.firingGun = 'gun1';
@@ -167,8 +153,8 @@ class Upgrades extends Phaser.Scene {
                 player.gun.recoil = -35000;
                 player.type = "minigun";
                 player.gun.spread = 0.05;
+                
                 this.scene.resume('playScene').stop();
-                if (gameDifficulty < maxDifficulty) gameDifficulty++;
                 player.upgrade(1, "minigun", success);
             })
         }
@@ -184,6 +170,7 @@ class Upgrades extends Phaser.Scene {
                     }
                     if (player.gun.fireRate < 15) {
                         player.gun.fireRate = 15;
+                        maxedUpgrades.push('Fire Rate Up');
                     }
                 }
                 player.gun.setTexture('gun');
@@ -195,7 +182,6 @@ class Upgrades extends Phaser.Scene {
                 player.gun2.recoil = -40000;
                 
                 this.scene.resume('playScene').stop();
-                if (gameDifficulty < maxDifficulty) gameDifficulty++;
                 player.upgrade(1, "double gun", success);
             })
         }

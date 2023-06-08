@@ -12,7 +12,7 @@ class Enemy extends Phaser.GameObjects.Sprite {
         this.scoreValue = 1;
         this.player;
         this.markedForDeath = false; //NOTE: This variable is used to kill the enemies during a second pass, since you can't destroy() in a forEach
-
+        this.boss = false;
         this.hasGun = false;
         //default HP value
         this.hp = 2;

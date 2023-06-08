@@ -1,13 +1,15 @@
-class e3Jawbreaker extends Enemy {
+class b1Jawbreaker extends Enemy {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.scoreValue = 5;
 
-        this.scale = 0.5;
-        this.hp = 10;
+        this.boss = true;
+        this.scoreValue = 20;
 
-        this.moveSpeed = 20;
-        this.damage = 3;
+        this.scale = 0.6;
+        this.hp = 100;
+
+        this.moveSpeed = 30;
+        this.damage = 5;
         
         this.velocity = new Phaser.Math.Vector2();
     }

@@ -29,6 +29,7 @@ class Play extends Phaser.Scene {
     }
     
     create() {
+        maxedUpgrades = [];
         gameDifficulty = 1;
         this.followBoss = false;
         this.followBossTime = 350;
@@ -153,7 +154,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: this.bossIntroText,
                 alpha: 0,
-                duration: 3000,
+                duration: 3500,
                 ease: 'Linear',
                 repeat: 0,
                 yoyo: false,

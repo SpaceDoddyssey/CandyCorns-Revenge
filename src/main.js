@@ -31,7 +31,7 @@ const textSpacer = 64;
 let PlayButton, Ready;
 
 let player;
-let startingHp = 50;
+let startingHp = 100;
 let playerHp = startingHp;
 let playerBullets = [];
 let playerBulletDamage = 1;

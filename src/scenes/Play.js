@@ -22,6 +22,8 @@ class Play extends Phaser.Scene {
         this.load.image('gummybear1',    'e5GummyBear1.png');
         this.load.image('gummybear2',   'e5GummyBear2.png');
         this.load.image('gummybear3',   'e5GummyBear3.png');
+        this.load.image('jawbreakerHurt', 'b1JawbreakerHurt.png');
+        this.load.image('jawbreakerDead', 'b1JawbreakerDead.png');
         this.load.image('spike',        'spike.png');      
         this.load.image('speedTile',    'speedTile.png');
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
@@ -111,7 +113,7 @@ class Play extends Phaser.Scene {
         this.fastestAllowedSpawnRate = 250;
         this.enemiesPerSpawn = 3;
 
-        this.upgradesRate = 3000;
+        this.upgradesRate = 100//3000;
         this.upgradesTimer = this.upgradesRate;
 
         this.initCanvasAndUI();

@@ -42,6 +42,13 @@ class b1Jawbreaker extends Enemy {
         }
         this.followPlayer();
 
+        if (this.hp <= 50 && this.hp > 20) {
+            this.setTexture('jawbreakerHurt');
+        }
+        if (this.hp <= 20) {
+            this.setTexture('jawbreakerDead');
+        }
+
         super.update();
     }
 

@@ -42,8 +42,17 @@ class Menu extends Phaser.Scene {
         menuConfig.fontSize = '24px';
 
 
-        let PlayButton = new Button(centerX, centerY + borderUISize * 4, ' Play ', this, () =>
+        let PlayButton = new Button(centerX - borderUISize * 4, centerY + borderUISize * 4, ' Play ', this, () =>
         {
+          game.settings = {
+            audioPlaying: true
+          }
+          this.sound.play('gunCock', { volume: 0.6 });
+          this.scene.stop().start('playScene');
+        });
+        let GraderButton = new Button(centerX + borderUISize * 4, centerY + borderUISize * 4, ' Grader Mode ', this, () =>
+        {
+          playerHp = 999;
           game.settings = {
             audioPlaying: true
           }

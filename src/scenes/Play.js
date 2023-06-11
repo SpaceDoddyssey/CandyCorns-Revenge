@@ -331,7 +331,7 @@ class Play extends Phaser.Scene {
         }
 
         this.upgradesTimer--;   
-        console.log(bossActive);
+        //console.log(bossActive);
         if(this.upgradesTimer < 0 && bossActive == false) {
             this.upgradesTimer = this.upgradesRate;
             this.scene.pause().launch('upgradesScene');

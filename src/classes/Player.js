@@ -98,6 +98,8 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         });
 
+        this.scene.sound.play('powerUp', { volume: 0.9 });
+
         // Place difficulty increase notification at the top of the screen
         let DiffText;
         if (gameDifficulty < 6) DiffText = this.scene.add.text(this.scene.cameras.main.scrollX + game.config.width/2.75, this.scene.cameras.main.scrollY + 150, 'Difficulty Increased!', diffConfig).setOrigin(0, 0.5).setDepth(3);

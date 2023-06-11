@@ -8,6 +8,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('gunfire', 'player_gun_sound.wav');
         this.load.audio('hit', 'player_damaged.wav');
         this.load.audio('death', 'enemydeath.wav');
+        this.load.audio('gunCock', 'gun-cock.wav');
+        this.load.audio('powerUp', 'powerUp.wav' )
         
         this.load.image('TitleScreen', 'TitleScreen.png');
         this.load.image('TitleBackground', 'TitleBackground.png');
@@ -45,6 +47,7 @@ class Menu extends Phaser.Scene {
           game.settings = {
             audioPlaying: true
           }
+          this.sound.play('gunCock', { volume: 0.6 });
           this.scene.stop().start('playScene');
         });
 

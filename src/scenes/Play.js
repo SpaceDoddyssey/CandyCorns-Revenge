@@ -170,8 +170,8 @@ class Play extends Phaser.Scene {
             enemy.damage += 3;
         }
 
-        if (!enemy.boss) this.physics.add.collider(enemy, objectLayer);
-        this.physics.add.collider(enemy, borderLayer);
+        //if (!enemy.boss) this.physics.add.collider(enemy, objectLayer);
+        //this.physics.add.collider(enemy, borderLayer);
 
         enemy.player = player;
         enemies.push(enemy);

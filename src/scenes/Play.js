@@ -8,7 +8,6 @@ class Play extends Phaser.Scene {
         this.load.image('player_idle',  'Candy_Corn_Idle.png');
         this.load.image('player_firing','Candy_Corn_Firing.png');
         this.load.image('player_hurt',  'Candy_Corn_Hurt.png');
-        this.load.image('background',   'ph_background.png');
         this.load.image('gun',          'player_gun.png');
         this.load.image('minigun',       'minigun.png');
         this.load.image('playerbullet', 'player_bullet.png');

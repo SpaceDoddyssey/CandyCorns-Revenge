@@ -9,7 +9,8 @@ class Menu extends Phaser.Scene {
         this.load.audio('hit', 'player_damaged.wav');
         this.load.audio('death', 'enemydeath.wav');
         this.load.audio('gunCock', 'gun-cock.wav');
-        this.load.audio('powerUp', 'powerUp.wav' )
+        this.load.audio('powerUp', 'powerUp.wav' );
+        this.load.audio('playerDeath', 'playerdeath.wav');
         
         this.load.image('TitleScreen', 'TitleScreen.png');
         this.load.image('TitleBackground', 'TitleBackground.png');

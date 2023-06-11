@@ -37,12 +37,17 @@ class Player extends Phaser.GameObjects.Sprite {
     takeDamage(amount, iframesGiven) {
         if (this.iframes == 0) {
             //damage sprite
-            this.scene.sound.play('hit');
             this.setTexture(this.hurtSprite);
             if (playerHp > 0) {
                 playerHp -= amount;
             }
             else playerHp = 0;
+
+            if(playerHp > 0){
+                this.scene.sound.play('hit');
+            } else {
+                this.scene.sound.play('playerDeath');
+            }
 
             this.iframes = iframesGiven;
 

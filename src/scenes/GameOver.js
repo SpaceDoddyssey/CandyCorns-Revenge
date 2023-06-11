@@ -8,6 +8,7 @@ class GameOver extends Phaser.Scene {
     }
 
     create() {
+
         // place gameOver image
         this.add.image(270, centerY, 'GameOver').setOrigin(0.5, 0.5);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);

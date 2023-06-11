@@ -13,7 +13,7 @@ let config = {
             fps: 60
         }
     },
-    scene: [ Menu, Play, GameOver, Pause, Upgrades ]
+    scene: [ Menu, Play, GameOver, Pause, Upgrades, Credits ]
 }
 
 let game = new Phaser.Game(config);
@@ -28,10 +28,8 @@ let centerY = game.config.height/2;
 
 const textSpacer = 64;
 
-let PlayButton, Ready;
-
 let player;
-let startingHp = 100;
+let startingHp = 30;
 let playerHp = startingHp;
 let playerBullets = [];
 let playerBulletDamage = 1;

@@ -34,31 +34,32 @@ class Menu extends Phaser.Scene {
         keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
 
         // show menu text
-        let storyText    = this.add.text(game.config.width/2, game.config.height/2 - borderUISize * 4, ' Candy Corn is tired of\n being called not a real candy. \n Now he takes his vengeance! ', menuConfig).setOrigin(0.5);
-        let tutorialText = this.add.text(game.config.width/2, game.config.height/2 - borderUISize, ' WASD to move, click to fire \n Hold to continue firing \n P to Pause, F to toggle Fullscreen ', menuConfig).setOrigin(0.5, 0);
+        let storyText    = this.add.text(centerX, centerY - borderUISize * 4, ' Candy Corn is tired of\n being called not a real candy. \n Now he takes his vengeance! ', menuConfig).setOrigin(0.5);
+        let tutorialText = this.add.text(centerX, centerY - borderUISize * 1.4, ' Click to fire \n Hold to continue firing \n P to Pause, F to toggle Fullscreen ', menuConfig).setOrigin(0.5, 0);
         menuConfig.backgroundColor = '#FF0000';
         menuConfig.fontSize = '24px';
-        const PlayButton = this.add.text(game.config.width/2, game.config.height/2 + borderUISize * 6,  'PLAY', menuConfig).setOrigin(0.5).setInteractive();
-        //-------------------------------------------
-        Ready = false; //CHANGE TO REENABLE THE MENU
-        //-------------------------------------------
-        PlayButton.on('pointerdown', function (pointer)
+
+
+        let PlayButton = new Button(centerX, centerY + borderUISize * 4, ' Play ', this, () =>
         {
-          this.setTint(0xff0000);
-          Ready = true;
+          game.settings = {
+            audioPlaying: true
+          }
+          this.scene.stop().start('playScene');
         });
-        // define keys
+
+        const CreditsButton = new Button(centerX, centerY + borderUISize * 7, ' Credits ', this, () =>
+        {
+          game.settings = {
+            audioPlaying: true
+          }
+          this.scene.stop().start('creditsScene');
+        });
     }
 
     update() {
       if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
         this.scale.toggleFullscreen();
-      }
-      if (Ready == true) {
-        game.settings = {
-          audioPlaying: false //change once we have music
-        }
-        this.scene.start('playScene');
       }
     }
 }

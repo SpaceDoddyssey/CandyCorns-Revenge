@@ -4,16 +4,18 @@ class GameOver extends Phaser.Scene {
     }
 
     preload() {
-        
+        this.load.image('GameOver', './assets/GameOver.png');
     }
 
     create() {
+        // place gameOver image
+        this.add.image(20, 0, 'GameOver').setOrigin(0, 0);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         let textConfig = {
             fontFamily: 'Georgia',
-            fontSize: '40px',
+            fontSize: '24px',
             color: '#FFFFFF',
-            align: 'right',
+            align: 'center',
             padding: {
                 top: 15,
                 bottom: 15,
@@ -47,14 +49,14 @@ class GameOver extends Phaser.Scene {
         }
 
         //Add text 
-        this.add.text(centerX, centerY - textSpacer*3, 'Game Over', textConfig).setOrigin(0.5);
         if(newHighScore) {
             this.add.text(centerX, centerY - borderUISize - borderPadding, 'New High Score!', textConfig).setOrigin(0.5);
         }
 
-        this.add.text(centerX, centerY + textSpacer, `Number of enemies defeated: ${score}`, textConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer*2,`Local high score: ${highScore}`, textConfig).setOrigin(0.5);
-        this.add.text(centerX, centerY + textSpacer*3, `Press R to Restart`, textConfig).setOrigin(0.5);
+        this.add.text(centerX*1.5, centerY/2 + textSpacer, `Number of enemies defeated:\n${score}`, textConfig).setOrigin(0.5);
+        this.add.text(centerX*1.5, centerY/2 + textSpacer*2,`Local high score:\n${highScore}`, textConfig).setOrigin(0.5);
+        textConfig.fontSize = '40px';
+        this.add.text(centerX*1.5, centerY/2 + textSpacer*3, `Press R to Restart`, textConfig).setOrigin(0.5);
     }
 
     update() {

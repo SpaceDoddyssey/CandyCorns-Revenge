@@ -8,13 +8,14 @@ class Upgrades extends Phaser.Scene {
         this.load.image('damageup', 'uDamageUp.png');
         this.load.image('firerateup', 'uFireRateUp.png');
         this.load.image('bulletspeedup', 'uBulletSpeedUp.png');
+        this.load.image('HPUP', 'uHPUp.png');
     }
 
     create() {
         this.maxUpgrades = 3;
         this.currentUpgrades = 0;
         this.verticalSpacing = -100;
-        this.potentialUpgrades = ['Damage Up', 'Bullet Speed Up', 'Fire Rate Up', 'Minigun', 'Double Gun'];
+        this.potentialUpgrades = ['Damage Up', 'Bullet Speed Up', 'Fire Rate Up', 'Minigun', 'Double Gun', 'HPUP'];
 
         // Splice potential upgrades by all elements inside of maxedUpgrades
         for (let i = 0; i < maxedUpgrades.length; i++) {
@@ -39,6 +40,8 @@ class Upgrades extends Phaser.Scene {
 
         this.maxDoubleFireRate = 15;
         this.doubleFireRateInc = -1;
+
+        this.hpInc = 10;
 
         this.SkipButton = false;
     }
@@ -195,6 +198,19 @@ class Upgrades extends Phaser.Scene {
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(1, "double gun", success);
+                if (gameDifficulty % 5 == 0 && bossActive == false) {
+                    playResume = true;
+                }
+            })
+        }
+        else if (upgrade == 'HPUP') {
+            this.add.sprite(centerX - 80, centerY + this.verticalSpacing, 'HPUP').setScale(0.2).setOrigin(0.5);
+            let upgrade6 = new Button(centerX, centerY + this.verticalSpacing, 'HP UP', this, () => {
+                playerHp += this.hpInc;
+                success = true;
+                
+                this.scene.resume('playScene').stop();
+                player.upgrade(this.hpInc, "hp", success);
                 if (gameDifficulty % 5 == 0 && bossActive == false) {
                     playResume = true;
                 }

@@ -38,11 +38,11 @@ class Play extends Phaser.Scene {
         enemyBullets = [];
         enemies = [];
         playerBullets = [];
-        if (game.settings.audioPlaying == true) {
+        if (gameAudio == false) {
             this.music = this.sound.add('gameMusic', { volume: 0.5 });
             this.music.loop = true;
             this.music.play();
-            game.settings.audioPlaying = true;
+            gameAudio = true;
         }
 
         keyUP    = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
@@ -287,6 +287,8 @@ class Play extends Phaser.Scene {
 
         this.uiUpdate();
         if (this.gameOver) {
+            //stop music
+            this.sound.stopAll();
             this.scene.start("gameOverScene");
         }
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {

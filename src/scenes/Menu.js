@@ -23,6 +23,7 @@ class Menu extends Phaser.Scene {
     create() {
         // Add background image to the center of the screen
         this.add.image(centerX, centerY, 'TitleBackground');
+        this.add.rectangle(centerX-10, centerY, 380, 390, 0xFFFFFF);
         this.add.image(centerX + 10, centerY, 'TitleScreen').setScale(1.1);
         // menu text configuration
         let menuConfig = {
@@ -38,9 +39,8 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        if(audioPlaying == false){
-          audioPlaying = true;
-
+        if (menuAudio == false){
+          menuAudio = true;
           this.music = this.sound.add('menuMusic', { volume: 0.5 });
           this.music.loop = true;
           this.music.play();

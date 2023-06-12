@@ -67,6 +67,7 @@ class GameOver extends Phaser.Scene {
             // start next scene
             score = 0;
             playerHp = startingHp;
+            gameAudio = false;
             this.scene.start('playScene');
         }
     }

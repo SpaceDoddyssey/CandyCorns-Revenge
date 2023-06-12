@@ -46,6 +46,7 @@ class Player extends Phaser.GameObjects.Sprite {
             if(playerHp > 0){
                 this.scene.sound.play('hit');
             } else {
+                playerHp = 0;
                 this.scene.sound.play('playerDeath');
             }
 

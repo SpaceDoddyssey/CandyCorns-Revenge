@@ -6,7 +6,7 @@ class e4Marshmallow extends Enemy {
         this.minScale = 0.075;
         this.maxScale = 0.2;
         this.hp = 3;
-        this.damage = 2;
+        this.damage = 1;
         this.body.setImmovable();
     }
     

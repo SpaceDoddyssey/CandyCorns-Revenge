@@ -9,7 +9,7 @@ class b1Jawbreaker extends Enemy {
         this.hp = 100;
 
         this.moveSpeed = 30;
-        this.damage = 5;
+        this.damage = 3;
         
         this.velocity = new Phaser.Math.Vector2();
     }

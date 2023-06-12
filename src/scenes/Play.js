@@ -141,11 +141,9 @@ class Play extends Phaser.Scene {
         } else if (gameDifficulty == 3) {
             enemy = this.difficultyThree(spawnPoint);
             enemy.hp += 2;
-            enemy.damage += 1;
         } else if (gameDifficulty == 4) {
             enemy = this.difficultyFour(spawnPoint);
             enemy.hp += 3;
-            enemy.damage += 2;
         } else if (gameDifficulty == 5) {
             enemy = this.difficultyFive();
             boss = enemy;
@@ -166,7 +164,7 @@ class Play extends Phaser.Scene {
         } else if (gameDifficulty == 6) {
             enemy = this.difficultySix(spawnPoint);
             enemy.hp += 5;
-            enemy.damage += 3;
+            enemy.damage += 1;
         }
 
         //if (!enemy.boss) this.physics.add.collider(enemy, objectLayer);

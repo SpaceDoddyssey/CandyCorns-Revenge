@@ -11,7 +11,7 @@ class e5GummyBear extends Enemy {
         this.recoil = -100000;
         this.decelerate = 0.8;
 
-        this.damage = 3;
+        this.damage = 2;
 
         this.fireRate = 1000;
         this.fireCooldown = 500;

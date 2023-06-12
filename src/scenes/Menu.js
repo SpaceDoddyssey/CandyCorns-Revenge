@@ -39,13 +39,6 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        if (menuAudio == false){
-          menuAudio = true;
-          this.music = this.sound.add('menuMusic', { volume: 0.5 });
-          this.music.loop = true;
-          this.music.play();
-        }
-
         keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
         
         // show menu text
@@ -71,16 +64,20 @@ class Menu extends Phaser.Scene {
 
         const CreditsButton = new Button(centerX, centerY + borderUISize * 7, ' Credits ', this, () =>
         {
-          game.settings = {
-            audioPlaying: true
-          }
           this.scene.stop().start('creditsScene');
         });
     }
 
     update() {
-      if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
-        this.scale.toggleFullscreen();
-      }
+        if(Phaser.Input.Keyboard.JustDown(keyFullscreen)){
+          this.scale.toggleFullscreen();
+        }
+
+        if (menuAudio == false){
+          menuAudio = true;
+          this.music = this.sound.add('menuMusic', { volume: 0.5 });
+          this.music.loop = true;
+          this.music.play();
+        }
     }
 }

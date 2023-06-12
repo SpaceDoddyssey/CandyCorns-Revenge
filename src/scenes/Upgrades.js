@@ -41,7 +41,7 @@ class Upgrades extends Phaser.Scene {
         this.maxDoubleFireRate = 15;
         this.doubleFireRateInc = -1;
 
-        this.hpInc = 10;
+        this.hpInc = 15;
 
         this.SkipButton = false;
     }

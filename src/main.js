@@ -47,6 +47,8 @@ let manualMoveSpeed = 30;
 
 let keyUP, keyLEFT, keyDOWN, keyRIGHT, keyESC, keyR, keyPause, keyFullscreen;
 
+let audioPlaying = false;
+
 let map = null;
 let spikesLayer = null;
 let speedLayer = null;

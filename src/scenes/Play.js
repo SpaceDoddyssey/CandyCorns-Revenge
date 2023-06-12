@@ -39,9 +39,9 @@ class Play extends Phaser.Scene {
         enemies = [];
         playerBullets = [];
         if (game.settings.audioPlaying == true) {
-            /*let backgroundMusic = this.sound.add('sfx_lobby');
-            backgroundMusic.loop = true;
-            backgroundMusic.play();*/
+            this.music = this.sound.add('gameMusic', { volume: 0.5 });
+            this.music.loop = true;
+            this.music.play();
             game.settings.audioPlaying = true;
         }
 

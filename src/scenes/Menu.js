@@ -4,6 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload() {
+        this.loadingText = this.add.text(centerX, centerY, 'Loading...');
         this.load.path = 'assets/';
         this.load.audio('gunfire', 'player_gun_sound.wav');
         this.load.audio('hit', 'player_damaged.wav');
@@ -12,6 +13,9 @@ class Menu extends Phaser.Scene {
         this.load.audio('powerUp', 'powerUp.wav' );
         this.load.audio('playerDeath', 'playerdeath.wav');
         
+        this.load.audio('menuMusic', 'Run-Amok.mp3');
+        this.load.audio('gameMusic', 'Glory-Eternal.mp3')
+
         this.load.image('TitleScreen', 'TitleScreen.png');
         this.load.image('TitleBackground', 'TitleBackground.png');
     }
@@ -34,8 +38,16 @@ class Menu extends Phaser.Scene {
             fixedWidth: 0
         }
 
-        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        if(audioPlaying == false){
+          audioPlaying = true;
 
+          this.music = this.sound.add('menuMusic', { volume: 0.5 });
+          this.music.loop = true;
+          this.music.play();
+        }
+
+        keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        
         // show menu text
         let storyText    = this.add.text(centerX, centerY - borderUISize * 4, ' Candy Corn is tired of\n being called not a real candy. \n Now he takes his vengeance! ', menuConfig).setOrigin(0.5);
         let tutorialText = this.add.text(centerX, centerY - borderUISize * 1.4, ' Click to fire \n Hold to continue firing \n P to Pause, F to toggle Fullscreen ', menuConfig).setOrigin(0.5, 0);
@@ -45,19 +57,15 @@ class Menu extends Phaser.Scene {
 
         let PlayButton = new Button(centerX - borderUISize * 4, centerY + borderUISize * 4, ' Play ', this, () =>
         {
-          game.settings = {
-            audioPlaying: true
-          }
-          this.sound.play('gunCock', { volume: 0.6 });
+          this.sound.play('gunCock', { volume: 1 });
+          this.music.stop();
           this.scene.stop().start('playScene');
         });
         let GraderButton = new Button(centerX + borderUISize * 4, centerY + borderUISize * 4, ' Grader Mode ', this, () =>
         {
           playerHp = 999;
-          game.settings = {
-            audioPlaying: true
-          }
-          this.sound.play('gunCock', { volume: 0.6 });
+          this.sound.play('gunCock', { volume: 1 });
+          this.music.stop();
           this.scene.stop().start('playScene');
         });
 

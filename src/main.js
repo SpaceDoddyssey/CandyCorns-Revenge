@@ -108,7 +108,7 @@ const scoreConfig = {
         left: 5,
         right: 5
     },
-    fixedWidth: 170,
+    //fixedWidth: 170,
     setDepth: 0
 }
 
@@ -116,3 +116,4 @@ const timeConfig = Object.assign({}, scoreConfig, { fixedWidth: 160 });
 const gameOverConfig = Object.assign({}, scoreConfig, { fontSize: '56px', align: 'center', fixedWidth: 375 });
 const restartConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 380 });
 const difficultyConfig = Object.assign({}, scoreConfig, { align: 'center', fixedWidth: 250 });
+const hpConfig = Object.assign({}, scoreConfig, { align: 'right' });

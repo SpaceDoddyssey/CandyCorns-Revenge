@@ -4,6 +4,7 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
+        this.loadingText = this.add.text(centerX, centerY, 'Loading...');
         this.load.path = 'assets/';
         this.load.image('player_idle',  'Candy_Corn_Idle.png');
         this.load.image('player_firing','Candy_Corn_Firing.png');
@@ -393,7 +394,7 @@ class Play extends Phaser.Scene {
 
         // 170 is the Fixed Width value of scoreConfig, if there's a better way of grabbing that value, please replace the value
         
-        this.hpCounter.x = this.cameras.main.scrollX + game.config.width - 170;
+        this.hpCounter.x = this.cameras.main.scrollX + game.config.width - 110;
         this.hpCounter.y = this.cameras.main.scrollY;
 
         this.difficultyCounter.x = this.cameras.main.scrollX + (game.config.width - 250)/2;
@@ -421,7 +422,7 @@ class Play extends Phaser.Scene {
         // With a beyond borders map, UI should be later be constantly updated at a distance away from the player rather than a constant fixed distance.
 
         this.scoreCounter = this.add.text(this.cameras.main.scrollX, this.cameras.main.scrollY, 'Score: ' + score, scoreConfig).setDepth(3);
-        this.hpCounter = this.add.text(this.cameras.main.scrollX + 500, this.cameras.main.scrollY, 'HP: ' + score, scoreConfig).setDepth(3);
+        this.hpCounter = this.add.text(this.cameras.main.scrollX + 540, this.cameras.main.scrollY, 'HP: ' + score, hpConfig).setDepth(3);
         this.difficultyCounter = this.add.text(this.cameras.main.scrollX + 250, this.cameras.main.scrollY, 'Difficulty: ' + gameDifficulty, difficultyConfig).setDepth(3);
     }
 }

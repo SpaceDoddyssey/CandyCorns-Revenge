@@ -395,7 +395,7 @@ class Play extends Phaser.Scene {
 
         // 170 is the Fixed Width value of scoreConfig, if there's a better way of grabbing that value, please replace the value
         
-        this.hpCounter.x = this.cameras.main.scrollX + game.config.width - 110;
+        this.hpCounter.x = this.cameras.main.scrollX + game.config.width - 150;
         this.hpCounter.y = this.cameras.main.scrollY;
 
         this.difficultyCounter.x = this.cameras.main.scrollX + (game.config.width - 250)/2;

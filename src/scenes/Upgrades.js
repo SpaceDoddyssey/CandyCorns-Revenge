@@ -8,7 +8,7 @@ class Upgrades extends Phaser.Scene {
         this.load.image('damageup', 'uDamageUp.png');
         this.load.image('firerateup', 'uFireRateUp.png');
         this.load.image('bulletspeedup', 'uBulletSpeedUp.png');
-        this.load.image('HPUP', 'uHPUp.png');
+        this.load.image('HPUP', 'uHPUP.png');
     }
 
     create() {

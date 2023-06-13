@@ -151,6 +151,7 @@ class Play extends Phaser.Scene {
         this.initCanvasAndUI();
 
         this.frameTime = 0;
+        this.loadingText.destroy();
     }
 
     spawnEnemy() {

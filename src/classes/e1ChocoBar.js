@@ -3,7 +3,7 @@ class e1ChocoBar extends Enemy {
         super(scene, x, y, texture, frame);
 
         this.scale = 0.125;
-        this.hp = 2;
+        this.hp = 1.5;
         this.gun;
         this.hasGun = true;
         this.moveSpeed = 30;

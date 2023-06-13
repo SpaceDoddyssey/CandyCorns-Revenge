@@ -4,7 +4,7 @@ class e3Jawbreaker extends Enemy {
         this.scoreValue = 5;
 
         this.scale = 0.5;
-        this.hp = 10;
+        this.hp = 12;
 
         this.moveSpeed = 20;
         this.damage = 3;

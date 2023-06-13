@@ -24,16 +24,17 @@ class Play extends Phaser.Scene {
         this.load.image('jawbreakerHurt', 'b1JawbreakerHurt.png');
         this.load.image('jawbreakerDead', 'b1JawbreakerDead.png');
         this.load.image('spike',        'spike.png');      
+        this.load.image('skull',        'skull.png');
         this.load.image('speedTile',    'speedTile.png');
         this.load.image('tilesetImage', 'CandyCornRevenge_Tileset.png');
-        this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset.json');
+        this.load.tilemapTiledJSON('tilemapJSON', 'CCR_Tileset2.json');
     }
     
     create() {
         maxedUpgrades = [];
         gameDifficulty = 1;
         this.followBoss = false;
-        this.followBossTime = 350;
+        this.followBossTime = 170;
         this.bossIntroText = null;
         enemyBullets = [];
         enemies = [];
@@ -61,14 +62,17 @@ class Play extends Phaser.Scene {
         objectLayer = map.createLayer('Objects', tileset, 0, 0).setDepth(-1);
 
         spikesLayer = map.getObjectLayer('Spikes');
-        speedLayer = map.getObjectLayer('SpeedTiles');
+        skullsLayer = map.getObjectLayer('Skulls');
+        //speedLayer = map.getObjectLayer('SpeedTiles');
 
         objectLayer.setCollisionByProperty({playerCollidable: true});
         borderLayer.setCollisionByProperty({playerCollidable: true});
 
         // spawn player
         const playerSpawn = map.findObject('PlayerSpawn', obj => obj.name === 'playerSpawn');
-        player = new Player(this, playerSpawn.x, playerSpawn.y, 'player_idle').setOrigin(0.5, 0.5);
+        this.playerSpawnx = playerSpawn.x;
+        this.playerSpawny = playerSpawn.y;
+        player = new Player(this, this.playerSpawnx, this.playerSpawny, 'player_idle').setOrigin(0.5, 0.5);
         player.gun = new Gun(this, 0, 0, 'gun').setOrigin(0.5, 0.5);
         player.gun.player = player;
         player.type = "gun";
@@ -79,15 +83,43 @@ class Play extends Phaser.Scene {
 				(object) => {
                     let spike = this.physics.add.sprite(object.x + object.width/2, object.y - object.height/2, 'spike');
                     //set immovable
-                    spike.body.immovable = true;
-                    spike.setScale(0.2);
+                    spike.setScale(0.3);
                     spike.setDepth(0);
                     this.physics.add.overlap(player, spike);
+                    if (object.properties[0].value == true){
+                        spike.angle = 180;
+                    } else if (object.properties[1].value == true){
+                        spike.angle = 270;
+                        spike.x -= 15;
+                    } else if (object.properties[2].value == true){
+                        spike.angle = 90;
+                    } else if (object.properties[3].value == true){
+                        spike.angle = 0;
+                    }
+                    spike.body.immovable = true;
 				}
 			);
 		}
 
-        if (speedLayer && speedLayer.objects){  
+        if (skullsLayer && skullsLayer.objects){
+            skullsLayer.objects.forEach(
+                (object) => {
+                    let skull = this.physics.add.sprite(object.x + object.width/2, object.y - object.height/2, 'skull');
+                    skull.body.immovable = true;
+                    //randomize scale
+                    let scale = Math.random() * (0.2) + 0.3;
+                    //randomly flip X
+                    if (Math.random() < 0.5){
+                        skull.flipX = true;
+                    }
+                    skull.setScale(scale);
+                    skull.setDepth(0);
+                    skulls.push(skull);
+                }
+            );
+        }
+
+        /*if (speedLayer && speedLayer.objects){  
             speedLayer.objects.forEach(
                 (object) => {
                     let speedTile = this.physics.add.sprite(object.x + object.width/2, object.y - object.height/2, 'speedTile');
@@ -97,7 +129,7 @@ class Play extends Phaser.Scene {
                     this.physics.add.overlap(player, speedTile);
                 }
             );
-        }
+        }*/
 
         this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
 
@@ -137,13 +169,12 @@ class Play extends Phaser.Scene {
             enemy = this.difficultyOne(spawnPoint);
         } else if (gameDifficulty == 2) {
             enemy = this.difficultyTwo(spawnPoint);
-            enemy.hp += 1;
         } else if (gameDifficulty == 3) {
             enemy = this.difficultyThree(spawnPoint);
-            enemy.hp += 2;
+            enemy.hp += 1;
         } else if (gameDifficulty == 4) {
             enemy = this.difficultyFour(spawnPoint);
-            enemy.hp += 3;
+            enemy.hp += 2;
         } else if (gameDifficulty == 5) {
             enemy = this.difficultyFive();
             boss = enemy;
@@ -153,7 +184,7 @@ class Play extends Phaser.Scene {
             this.tweens.add({
                 targets: this.bossIntroText,
                 alpha: 0,
-                duration: 3500,
+                duration: 2300,
                 ease: 'Linear',
                 repeat: 0,
                 yoyo: false,
@@ -167,8 +198,11 @@ class Play extends Phaser.Scene {
             enemy.damage += 1;
         }
 
-        //if (!enemy.boss) this.physics.add.collider(enemy, objectLayer);
-        //this.physics.add.collider(enemy, borderLayer);
+        if (enemy.texture.key != 'jawbreaker') {
+            this.physics.add.collider(enemy, objectLayer);
+        }
+        if (!enemy.boss) enemy.scale *= Math.random() * (0.5) + 0.8;
+        this.physics.add.collider(enemy, borderLayer);
 
         enemy.player = player;
         enemies.push(enemy);
@@ -190,6 +224,8 @@ class Play extends Phaser.Scene {
     difficultyOne(spawnPoint) {
         var enemy;
         enemy = new e2Lollipop(this, spawnPoint.x, spawnPoint.y, 'lollipop').setOrigin(0.5, 0.5);
+
+        //randomize enemy scale
         return enemy;
     }
 
@@ -240,7 +276,7 @@ class Play extends Phaser.Scene {
 
     difficultyFive() {
         var enemy;
-        enemy = new b1Jawbreaker(this, centerX, centerY, 'jawbreaker').setOrigin(0.5, 0.5);
+        enemy = new b1Jawbreaker(this, this.playerSpawnx, this.playerSpawny, 'jawbreaker').setOrigin(0.5, 0.5);
         return enemy;
     }
 
@@ -267,6 +303,11 @@ class Play extends Phaser.Scene {
     }
 
     update(time, delta) {
+
+        let i = Phaser.Math.RND.between(0, skulls.length-1);
+        //select random skulls
+        skulls[i].flipX = !skulls[i].flipX;
+
         //This code limits the update rate to 60/s
         this.frameTime += delta;
         if(this.frameTime < 16.5){

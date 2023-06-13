@@ -5,7 +5,7 @@ class e5GummyBear extends Enemy {
         this.scoreValue = 3;
 
         this.scale = 0.3;
-        this.hp = 4;
+        this.hp = 5;
         this.moveSpeed = 10;
         this.firingAngle = 0;
         this.recoil = -100000;
@@ -64,7 +64,7 @@ class e5GummyBear extends Enemy {
         if (this.fireCooldown > 0) {
             this.fireCooldown -= 1;
         }
-        else {
+        else if (Math.abs(this.x - this.player.x) < 300 && Math.abs(this.y - this.player.y) < 300) {
             this.fire();
         }
 

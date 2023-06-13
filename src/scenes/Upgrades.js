@@ -21,24 +21,37 @@ class Upgrades extends Phaser.Scene {
         for (let i = 0; i < maxedUpgrades.length; i++) {
             this.potentialUpgrades.splice(this.potentialUpgrades.indexOf(maxedUpgrades[i]), 1);
         }
+        if (gameDifficulty % 5 != 0) {
+            //check if Minigun and Double Gun are in potential upgrades before splicing
+
+            if (this.potentialUpgrades.indexOf('Minigun') != -1) this.potentialUpgrades.splice(this.potentialUpgrades.indexOf('Minigun'), 1);
+            if (this.potentialUpgrades.indexOf('Double Gun') != -1) this.potentialUpgrades.splice(this.potentialUpgrades.indexOf('Double Gun'), 1);
+        } else {
+            //check if upgrades are in potential upgrades before splicing
+
+            if (this.potentialUpgrades.indexOf('Fire Rate Up') != -1) this.potentialUpgrades.splice(this.potentialUpgrades.indexOf('Fire Rate Up'), 1);
+            if (this.potentialUpgrades.indexOf('Bullet Speed Up') != -1) this.potentialUpgrades.splice(this.potentialUpgrades.indexOf('Bullet Speed Up'), 1);
+            if (this.potentialUpgrades.indexOf('Damage Up') != -1) this.potentialUpgrades.splice(this.potentialUpgrades.indexOf('Damage Up'), 1);
+            if (this.potentialUpgrades.indexOf('HPUP') != -1) this.potentialUpgrades.splice(this.potentialUpgrades.indexOf('HPUP'), 1);
+        }
 
         let mainText = this.add.text(centerX, centerY - 200, 'Select an upgrade to continue', textConfig).setOrigin(0.5);
 
         keyFullscreen = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F)
 
-        this.maxDamage = 5;
-        this.damageUpIncrease = 1;
+        this.maxDamage = 4;
+        this.damageUpIncrease = 0.5;
 
-        this.maxBulletSpeed = 17;
-        this.bulletSpeedInc = 2;
+        this.maxBulletSpeed = 22;
+        this.bulletSpeedInc = 4;
 
-        this.maxGunFireRate = 10;
-        this.gunFireRateInc = -2;
+        this.maxGunFireRate = 9;
+        this.gunFireRateInc = -3;
 
         this.maxMinigunFireRateCap = 4;
         this.minigunFireRateInc = -1;
 
-        this.maxDoubleFireRate = 15;
+        this.maxDoubleFireRate = 13;
         this.doubleFireRateInc = -1;
 
         this.hpInc = 15;
@@ -75,7 +88,7 @@ class Upgrades extends Phaser.Scene {
             this.add.sprite(centerX - 90, centerY + this.verticalSpacing, 'damageup').setScale(2).setOrigin(0.5).setScale(0.45);
             let upgrade1 = new Button(centerX, centerY + this.verticalSpacing, 'Damage Up', this, () => {
                 playerBulletDamage += this.damageUpIncrease;
-                if (playerBulletDamage != this.maxDamage) success = true;
+                if (playerBulletDamage < this.maxDamage) success = true;
                 else {
                     success = false;
                     maxedUpgrades.push('Damage Up');
@@ -179,12 +192,11 @@ class Upgrades extends Phaser.Scene {
             let upgrade5 = new Button(centerX, centerY + this.verticalSpacing, 'Double Gun', this, () => {
                 if (player.type != "double") {
                     success = true;
-                    maxedUpgrades.push('Double Gun');
                     if (player.type == "minigun") {
                         maxedUpgrades.splice(maxedUpgrades.indexOf('Minigun'));
                     }
-                    if (player.gun.fireRate < 15) {
-                        player.gun.fireRate = 15;
+                    if (player.gun.fireRate < this.maxDoubleFireRate) {
+                        player.gun.fireRate = this.maxDoubleFireRate;
                         maxedUpgrades.push('Fire Rate Up');
                     }
                 }
@@ -195,6 +207,8 @@ class Upgrades extends Phaser.Scene {
                 player.doubleGun();
                 player.gun2.spread = 0.03;
                 player.gun2.recoil = -40000;
+
+                maxedUpgrades.push('Double Gun');
                 
                 this.scene.resume('playScene').stop();
                 player.upgrade(1, "double gun", success);

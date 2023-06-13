@@ -23,7 +23,7 @@ class e1Gun extends Phaser.GameObjects.Sprite {
             this.fireCooldown--;
         }
 
-        if (Math.abs(this.x - this.e1Sprite.player.x) < 300 && Math.abs(this.y - this.e1Sprite.player.y)) {
+        if (Math.abs(this.x - this.e1Sprite.player.x) < 250 && Math.abs(this.y - this.e1Sprite.player.y) < 250) {
             this.isFiring = true;
         } else {
             this.isFiring = false;

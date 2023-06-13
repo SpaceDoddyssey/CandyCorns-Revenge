@@ -33,7 +33,7 @@ let startingHp = 30;
 let playerHp = startingHp;
 let playerBullets = [];
 let playerBulletDamage = 1;
-let playerBulletSpeed = 7;
+let playerBulletSpeed = 6;
 let maxedUpgrades = [];
 
 let highScore = 0;
@@ -42,6 +42,8 @@ let score = 0;
 
 let enemyBullets = [];
 let enemies = [];
+
+let skulls = [];
 
 let manualMoveSpeed = 30;
 
@@ -52,7 +54,8 @@ let gameAudio = false;
 
 let map = null;
 let spikesLayer = null;
-let speedLayer = null;
+let skullsLayer = null;
+//let speedLayer = null;
 let objectLayer = null;
 let borderLayer = null;
 

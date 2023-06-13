@@ -8,6 +8,7 @@ class GameOver extends Phaser.Scene {
     }
 
     create() {
+        this.sound.play('playerDeath');
 
         // place gameOver image
         this.add.image(270, centerY, 'GameOver').setOrigin(0.5, 0.5);

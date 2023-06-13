@@ -7,7 +7,7 @@ class EnemyBullet extends Phaser.GameObjects.Sprite {
         this.scale = 0.3;
         this.body.setCircle(22);
         this.damage = 1;
-        this.speed = 4;
+        this.speed = 3.5;
         this.rotation;
     }
 

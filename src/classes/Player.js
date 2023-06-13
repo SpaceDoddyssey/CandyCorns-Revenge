@@ -47,7 +47,6 @@ class Player extends Phaser.GameObjects.Sprite {
                 this.scene.sound.play('hit');
             } else {
                 playerHp = 0;
-                this.scene.sound.play('playerDeath');
             }
 
             this.iframes = iframesGiven;
@@ -78,17 +77,13 @@ class Player extends Phaser.GameObjects.Sprite {
         this.gun2 = new Gun(this.scene, 0, 0, 'gun').setOrigin(0.5, 0.5);
         this.gun2.player = player;
         this.gun2.distanceFromPlayer = 20;
-        this.gun2.offsetY = 5;
+        this.gun2.offsetY = 20;
         this.gun2.scale = 0.075;
         this.gun.scale = 0.075;
         this.type = "double";
     }
 
     upgrade(value, type, success){
-
-        console.log("Picked upgrade ", type);
-        console.log("Scene = ", this.scene);
-        
         let Upgraded;
         if (success) Upgraded = this.scene.add.text(player.x + player.width*this.scale, player.y - player.height*this.scale + 5, '+' + value + " " + type, popUpConfig).setOrigin(0, 0.5).setDepth(3);
         else Upgraded = this.scene.add.text(player.x + player.width*this.scale, player.y - player.height*this.scale + 5, 'Maxed Out!', popUpConfig).setOrigin(0, 0.5).setDepth(3);
@@ -196,11 +191,11 @@ class Player extends Phaser.GameObjects.Sprite {
                 }
                 if (this.firingGun == 'gun1' && this.type == "double") {
                     this.firingGun = 'gun2';
-                    this.gun2.fireCooldown = this.gun2.fireRate/2;
+                    this.gun2.fireCooldown = this.gun2.fireRate*0.75;
                 }
                 else if (this.firingGun == 'gun2' && this.type == "double") {
                     this.firingGun = 'gun1';
-                    this.gun.fireCooldown = this.gun.fireRate/2;
+                    this.gun.fireCooldown = this.gun.fireRate*0.75;
                 }
             }
         } else if (this.iframes == 0) {
@@ -239,13 +234,13 @@ class Player extends Phaser.GameObjects.Sprite {
             }
         )
         
-        speedLayer.objects.forEach(
+        /*speedLayer.objects.forEach(
             (speedTile) => {
                 const speedTileRect = new Phaser.Geom.Rectangle(speedTile.x, speedTile.y, speedTile.width, speedTile.height);
                 if (Phaser.Geom.Intersects.RectangleToRectangle(this.getBounds(), speedTileRect)) {
                     this.y -= 100;
                 }
             }
-        )
+        )*/
     }
 }

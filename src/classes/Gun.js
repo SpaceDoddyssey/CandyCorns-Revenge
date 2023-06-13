@@ -6,7 +6,7 @@ class Gun extends Phaser.GameObjects.Sprite {
         this.scale = 0.1;
 
         this.recoil = -50000; 
-        this.fireRate = 20;
+        this.fireRate = 21;
         this.fireCooldown = 0;
         this.fireRateCap = 20;
         this.depth = 2;
